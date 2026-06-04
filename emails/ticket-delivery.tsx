@@ -1,0 +1,150 @@
+import { Section, Text } from "react-email";
+
+import { EmailLayout } from "../components/email-layout";
+import { emailTheme, styles } from "../components/email-theme";
+import { InfoRow } from "../components/info-row";
+import { QrTicketCard } from "../components/qr-ticket-card";
+import { IconCalendar, IconMapPin, IconTicket } from "@tabler/icons-react";
+
+interface Ticket {
+  attendeeName: string;
+  ticketCode: string;
+  title: string;
+}
+
+export interface TicketDeliveryEmailProps {
+  tenant?: {
+    contact?: string;
+    socialNetworks?: {
+      facebook?: string;
+      instagram?: string;
+      x?: string;
+    };
+    logoUrl?: string;
+  };
+  edition?: {
+    name?: string;
+    venue?: string;
+    startsAt?: string;
+  };
+  customerName?: string;
+  tickets?: Ticket[];
+}
+
+export const TicketDeliveryEmail = ({
+  tenant = {
+    contact: "info@congrem.io",
+    socialNetworks: { facebook: "", instagram: "", x: "" },
+    logoUrl:
+      "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
+  },
+  edition = {
+    name: "Summer Music Festival",
+    venue: "Central Park Stage",
+    startsAt: "June 14, 2026 - 19:30",
+  },
+  customerName = "Alex Johnson",
+  tickets = [
+    {
+      attendeeName: "Alex Johnson",
+      ticketCode: "TCK-001-2026",
+      title: "Friday (July 13)",
+    },
+    {
+      attendeeName: "Sam Rivera",
+      ticketCode: "TCK-002-2026",
+      title: "Friday (July 13)",
+    },
+  ],
+}: TicketDeliveryEmailProps) => (
+  <EmailLayout
+    preview={`Your tickets for ${edition.name}`}
+    title="Your tickets are ready"
+    subtitle={`Hi ${customerName}, scan these QR codes at entry for quick access.`}
+    brandName="congrem"
+    brandLogoUrl={tenant.logoUrl}
+    logoPlaceholderText="CE"
+    heroIcon={IconTicket}
+    footerText="Please keep these tickets private. Each QR code is valid for one entry only."
+    socialNetworks={tenant?.socialNetworks}
+  >
+    <Section style={styles.section}>
+      <Text
+        style={{
+          margin: "0 0 10px",
+          fontSize: "16px",
+          lineHeight: "21px",
+          color: emailTheme.colors.text,
+        }}
+      >
+        <strong>{edition.name}</strong>
+      </Text>
+      {edition.venue ?<InfoRow
+        icon={
+          <IconMapPin
+            size={20}
+            color="#667382"
+            style={{ verticalAlign: "middle" }}
+          />
+        }
+        value={edition.venue}
+      /> : null }
+
+      {edition.startsAt ?<InfoRow
+        icon={
+          <IconCalendar
+            size={20}
+            color="#667382"
+            style={{ verticalAlign: "middle" }}
+          />
+        }
+        value={edition.startsAt}
+      />:null}
+    </Section>
+
+    <Section style={styles.section}>
+      {tickets.map((ticket) => (
+        <QrTicketCard
+          key={ticket.ticketCode}
+          attendeeName={ticket.attendeeName}
+          title={ticket.title}
+          ticketCode={ticket.ticketCode}
+        />
+      ))}
+      {/*<CtaButton href={manageTicketsUrl} label="Manage tickets" />*/}
+    </Section>
+  </EmailLayout>
+);
+
+TicketDeliveryEmail.PreviewProps = {
+  tenant: {
+    contact: "info@congrem.io",
+    socialNetworks: {
+      facebook: "https://facebook.com/example",
+      instagram: "https://instagram.com/example",
+      x: "https://x.com/example",
+    },
+    logoUrl:
+      "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
+  },
+  edition: {
+    name: "Summer Music Festival",
+    venue: "Central Park Stage",
+    startsAt: "June 14, 2026 - 19:30",
+  },
+  customerName: "Alex Johnson",
+  tickets: [
+    {
+      attendeeName: "Alex Johnson",
+      ticketCode: "TCK-001-2026",
+      title: "Friday (July 13)",
+    },
+    {
+      attendeeName: "Sam Rivera",
+      ticketCode: "TCK-002-2026",
+      title: "Saturday (July 14)",
+    },
+  ],
+} as TicketDeliveryEmailProps;
+
+export default TicketDeliveryEmail;
