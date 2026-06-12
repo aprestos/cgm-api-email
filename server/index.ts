@@ -24,7 +24,7 @@ interface SendBody {
   from?: string;
   subject?: string;
   replyTo?: string;
-  data?: Record<string, unknown>;
+  data?: unknown;
 }
 
 const app = new Hono();

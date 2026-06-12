@@ -5,11 +5,16 @@ import { emailTheme, styles } from "../components/email-theme";
 import { InfoRow } from "../components/info-row";
 import { QrTicketCard } from "../components/qr-ticket-card";
 import { IconCalendar, IconMapPin, IconTicket } from "@tabler/icons-react";
+import {DateTime} from "luxon";
 
 interface Ticket {
-  attendeeName: string;
-  ticketCode: string;
-  title: string;
+  ticket: {
+    valid_from: string;
+    valid_until: string;
+  };
+  recipient_name: string;
+  recipient_email: string;
+  code: string;
 }
 
 export interface TicketDeliveryEmailProps {
@@ -46,14 +51,22 @@ export const TicketDeliveryEmail = ({
   customerName = "Alex Johnson",
   tickets = [
     {
-      attendeeName: "Alex Johnson",
-      ticketCode: "TCK-001-2026",
-      title: "Friday (July 13)",
+      recipient_email: "alex.johnson@example.com",
+      recipient_name: "Alex Johnson",
+      code: "TCK-001-2026",
+      ticket: {
+        valid_from: "2026-07-13T19:30:00Z",
+        valid_until: "2026-07-13T23:00:00Z",
+      }
     },
     {
-      attendeeName: "Sam Rivera",
-      ticketCode: "TCK-002-2026",
-      title: "Friday (July 13)",
+      recipient_email: "sam.rivera@example.com",
+      recipient_name: "Sam Rivera",
+      code: "TCK-002-2026",
+      ticket: {
+        valid_from: "2026-07-13T19:30:00Z",
+        valid_until: "2026-07-13T23:00:00Z",
+      }
     },
   ],
 }: TicketDeliveryEmailProps) => (
@@ -98,17 +111,17 @@ export const TicketDeliveryEmail = ({
             style={{ verticalAlign: "middle" }}
           />
         }
-        value={edition.startsAt}
+        value={DateTime.fromISO(edition.startsAt).toFormat("dd/MM/yyyy - HH:mm")}
       />:null}
     </Section>
 
     <Section style={styles.section}>
       {tickets.map((ticket) => (
         <QrTicketCard
-          key={ticket.ticketCode}
-          attendeeName={ticket.attendeeName}
-          title={ticket.title}
-          ticketCode={ticket.ticketCode}
+          key={ticket.code}
+          attendeeName={ticket.recipient_name}
+          title={ticket.ticket.valid_from && ticket.ticket.valid_until}
+          ticketCode={ticket.code}
         />
       ))}
       {/*<CtaButton href={manageTicketsUrl} label="Manage tickets" />*/}
@@ -135,14 +148,22 @@ TicketDeliveryEmail.PreviewProps = {
   customerName: "Alex Johnson",
   tickets: [
     {
-      attendeeName: "Alex Johnson",
-      ticketCode: "TCK-001-2026",
-      title: "Friday (July 13)",
+      recipient_email: "alex.johnson@example.com",
+      recipient_name: "Alex Johnson",
+      code: "TCK-001-2026",
+      ticket: {
+        valid_from: "2026-07-13T19:30:00Z",
+        valid_until: "2026-07-13T23:00:00Z",
+      }
     },
     {
-      attendeeName: "Sam Rivera",
-      ticketCode: "TCK-002-2026",
-      title: "Saturday (July 14)",
+      recipient_email: "sam.rivera@example.com",
+      recipient_name: "Sam Rivera",
+      code: "TCK-002-2026",
+      ticket: {
+        valid_from: "2026-07-13T19:30:00Z",
+        valid_until: "2026-07-13T23:00:00Z",
+      }
     },
   ],
 } as TicketDeliveryEmailProps;
