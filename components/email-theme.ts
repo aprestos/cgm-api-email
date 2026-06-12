@@ -53,6 +53,10 @@ export const styles: Record<string, CSSProperties> = {
   },
   brandLogo: {
     display: "block",
+    height: "48px",
+    maxHeight: "48px",
+    width: "auto",
+    maxWidth: "180px",
   },
   logoPlaceholder: {
     display: "inline-block",

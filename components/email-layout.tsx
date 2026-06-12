@@ -93,7 +93,7 @@ export const EmailLayout = ({
                     <Link href={url}>
                       <Img
                         src={brandLogoUrl}
-                        height="64"
+                        height="48"
                         alt={brandName}
                         style={styles.brandLogo}
                       />
