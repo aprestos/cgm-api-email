@@ -87,20 +87,18 @@ export const styles: Record<string, CSSProperties> = {
     width: "80px",
     height: "80px",
     borderRadius: emailTheme.radius.pill,
-    backgroundColor: emailTheme.colors.primary,
+    backgroundColor: "#e8f1fb",
     margin: "0 auto",
     overflow: "hidden",
   },
   heroIcon: {
-    // padding centres the icon reliably in all email clients —
-    // lineHeight doesn't work for SVG elements
     width: "80px",
-    padding: "20px", // (80 - 40) / 2  →  exactly centres a 40px icon
+    padding: "20px", // (80 - 40) / 2  →  centres a 40px icon
     textAlign: "center",
     verticalAlign: "middle",
-    lineHeight: "0", // prevents phantom whitespace below the SVG
+    lineHeight: "0",
     fontSize: "0",
-    color: "#ffffff",
+    color: emailTheme.colors.primary,
   },
   title: {
     fontSize: "30px",
@@ -164,15 +162,12 @@ export const styles: Record<string, CSSProperties> = {
   },
   footerIcon: {
     display: "inline-block",
-    width: "24px",
-    height: "24px",
-    lineHeight: "24px",
+    padding: "7px",
     borderRadius: emailTheme.radius.pill,
     backgroundColor: "#dce2e8",
-    color: "#5f6b79",
-    textAlign: "center",
-    fontSize: "11px",
     textDecoration: "none",
+    lineHeight: "0",
+    fontSize: "0",
     margin: "0 4px",
   },
 };

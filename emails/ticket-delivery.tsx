@@ -4,7 +4,7 @@ import { EmailLayout } from "../components/email-layout";
 import { emailTheme, styles } from "../components/email-theme";
 import { InfoRow } from "../components/info-row";
 import { QrTicketCard } from "../components/qr-ticket-card";
-import { IconCalendar, IconMapPin, IconTicket } from "@tabler/icons-react";
+import { IconCalendar, IconMapPin } from "@tabler/icons-react";
 import {DateTime} from "luxon";
 
 interface Ticket {
@@ -77,7 +77,7 @@ export const TicketDeliveryEmail = ({
     brandName="congrem"
     brandLogoUrl={tenant.logoUrl}
     logoPlaceholderText="CE"
-    heroIcon={IconTicket}
+    heroIconUrl="https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/app/ticket.png"
     footerText="Please keep these tickets private. Each QR code is valid for one entry only."
     socialNetworks={tenant?.socialNetworks}
   >

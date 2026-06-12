@@ -31,6 +31,7 @@ export interface EmailLayoutProps {
   logoPlaceholderText?: string;
   viewOnlineUrl?: string;
   heroIcon?: Icon;
+  heroIconUrl?: string;
   supportEmail?: string;
   unsubscribeUrl?: string;
   copyrightName?: string;
@@ -64,6 +65,7 @@ export const EmailLayout = ({
   logoPlaceholderText,
   viewOnlineUrl,
   heroIcon: HeroIcon,
+  heroIconUrl,
   supportEmail,
   copyrightName,
   footerText,
@@ -118,12 +120,17 @@ export const EmailLayout = ({
 
           <Container style={styles.card}>
             <Section style={styles.hero}>
-              {HeroIcon
+              {heroIconUrl
                 ? (
                   <Section style={styles.heroIconWrap}>
                     <Row>
                       <Column align="center" style={styles.heroIcon}>
-                        <HeroIcon size={40} stroke={1.75} color="#ffffff" />
+                        <Img
+                          src={heroIconUrl}
+                          width="40"
+                          height="40"
+                          alt=""
+                        />
                       </Column>
                     </Row>
                   </Section>
@@ -144,7 +151,12 @@ export const EmailLayout = ({
                     href={socialNetworks.facebook}
                     style={styles.footerIcon}
                   >
-                    <IconBrandFacebookFilled />
+                    <Img
+                      src="https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/app/brand-facebook(1).png"
+                      width="18"
+                      height="18"
+                      alt="Facebook"
+                    />
                   </Link>
                 )
                 : null}
@@ -154,7 +166,12 @@ export const EmailLayout = ({
                     href={socialNetworks.instagram}
                     style={styles.footerIcon}
                   >
-                    <IconBrandInstagram />
+                    <Img
+                      src="https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/app/brand-instagram(2).png"
+                      width="18"
+                      height="18"
+                      alt="Instagram"
+                    />
                   </Link>
                 )
                 : null}

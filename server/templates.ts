@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 
 import OrderConfirmationEmail from "../emails/order-confirmation";
+import OrderRefundedEmail from "../emails/order-refunded";
 import PaymentConfirmationEmail from "../emails/payment-confirmation";
 import TeamInvitationEmail from "../emails/team-invitation";
 import TicketDeliveryEmail from "../emails/ticket-delivery";
@@ -29,6 +30,11 @@ export const templates = {
     Component: PaymentConfirmationEmail,
     subject: (d) =>
       `Payment received${d?.edition?.name ? ` — ${d.edition.name}` : ""}`,
+  },
+  "order-refunded": {
+    Component: OrderRefundedEmail,
+    subject: (d) =>
+      `Your refund of ${d?.refund?.refundAmount ?? "your amount"} is on its way`,
   },
   "team-invitation": {
     Component: TeamInvitationEmail,

@@ -133,21 +133,22 @@ export const OrderConfirmationEmail = ({
 }: OrderConfirmationEmailProps) => (
   <EmailLayout
     preview={`Your order ${order.orderId} has been placed`}
-    title="Order summary"
+    title="Order Confirmation"
     subtitle=""
     brandName="congrem.io"
     brandLogoUrl={tenant.logoUrl}
     supportEmail={tenant.contact}
     logoPlaceholderText="CE"
     heroIcon={IconShoppingCart}
+    heroIconUrl="https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/app/shopping-cart-copy.png"
     url={tenant?.url}
   >
     <Section style={styles.section}>
       <Text style={paragraph}>Hey {customer?.name},</Text>
       <Text style={paragraph}>
         Your order <strong>#{order.orderId}</strong>{" "}
-        has successfully been placed. You will find all the details below and we
-        will send the tickets after we receive the payment confirmation.
+        has successfully been placed and you can find all the details below.
+        The tickets will be sent in a separate email in a few minutes.
       </Text>
     </Section>
 
