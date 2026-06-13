@@ -6,6 +6,7 @@ import { InfoRow } from "../components/info-row";
 import { QrTicketCard } from "../components/qr-ticket-card";
 import { IconCalendar, IconMapPin } from "@tabler/icons-react";
 import {DateTime} from "luxon";
+import {getTicketTitle} from "../components/ticket.helper";
 
 interface Ticket {
   ticket: {
@@ -120,7 +121,7 @@ export const TicketDeliveryEmail = ({
         <QrTicketCard
           key={ticket.code}
           attendeeName={ticket.recipient_name}
-          title={ticket.ticket.valid_from && ticket.ticket.valid_until}
+          title={getTicketTitle(ticket.ticket.valid_from, ticket.ticket.valid_until, "en-GB")}
           ticketCode={ticket.code}
         />
       ))}

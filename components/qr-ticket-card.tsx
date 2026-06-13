@@ -36,16 +36,6 @@ export const QrTicketCard = ({
     >
       {attendeeName}
     </Text>
-    <Text
-      style={{
-        margin: "0 0 14px",
-        fontSize: "12px",
-        color: emailTheme.colors.muted,
-        letterSpacing: "0.05em",
-      }}
-    >
-      {ticketCode}
-    </Text>
     <Img
       src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${ticketCode}`}
       alt={`QR code for ${ticketCode}`}
