@@ -4,6 +4,7 @@ import { CtaButton } from "../components/cta-button";
 import { EmailLayout } from "../components/email-layout";
 import { emailTheme, styles } from "../components/email-theme";
 import { InfoRow } from "../components/info-row";
+import {shortId} from "../components/order.helper";
 
 export interface OrderRefundedEmailProps {
   tenant?: {
@@ -29,14 +30,6 @@ export interface OrderRefundedEmailProps {
     supportUrl?: string;
   };
 }
-
-const centerParagraph = {
-  margin: "0 0 24px",
-  fontSize: "15px",
-  lineHeight: "160%",
-  color: "#4b5563",
-  textAlign: "center" as const,
-};
 
 const detailLine = {
   padding: "4px 0",
@@ -94,7 +87,7 @@ export const OrderRefundedEmail = ({
         <strong style={{ color: emailTheme.colors.text }}>
           {refund.refundAmount}
         </strong>{" "}
-        for order <strong style={{ color: emailTheme.colors.text }}>{refund.orderId}</strong>.
+        for order <strong style={{ color: emailTheme.colors.text }}>{refund.orderId ? shortId(refund.orderId) : ''}</strong>.
         Please allow 5–10 business days for the amount to appear depending on
         your bank or card issuer.
       </Text>
@@ -127,17 +120,7 @@ export const OrderRefundedEmail = ({
           </Column>
           <Column align="right">
             <Text style={{ ...detailLine, ...valueStyle }}>
-              {refund.orderId}
-            </Text>
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Text style={detailLine}>Refund date</Text>
-          </Column>
-          <Column align="right">
-            <Text style={{ ...detailLine, ...valueStyle }}>
-              {refund.refundDate}
+              {refund.orderId ? shortId(refund.orderId) : ''}
             </Text>
           </Column>
         </Row>
