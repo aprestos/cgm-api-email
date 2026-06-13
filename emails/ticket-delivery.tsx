@@ -34,6 +34,9 @@ export interface TicketDeliveryEmailProps {
     startsAt?: string;
   };
   customerName?: string;
+  customer: {
+    name?: string;
+  };
   tickets?: Ticket[];
 }
 
@@ -50,6 +53,9 @@ export const TicketDeliveryEmail = ({
     startsAt: "June 14, 2026 - 19:30",
   },
   customerName = "Alex Johnson",
+  customer = {
+    name: "Alex Johnson",
+  },
   tickets = [
     {
       recipient_email: "alex.johnson@example.com",
@@ -74,7 +80,7 @@ export const TicketDeliveryEmail = ({
   <EmailLayout
     preview={`Your tickets for ${edition.name}`}
     title="Your tickets are ready"
-    subtitle={`Hi ${customerName}, scan these QR codes at entry for quick access.`}
+    subtitle={`Hi ${customer.name ?? customerName}, scan these QR codes at entry for quick access.`}
     brandName="congrem"
     brandLogoUrl={tenant.logoUrl}
     logoPlaceholderText="CE"
