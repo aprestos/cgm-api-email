@@ -62,8 +62,8 @@ export const TicketDeliveryEmail = ({
       recipient_name: "Alex Johnson",
       code: "TCK-001-2026",
       ticket: {
-        valid_from: "2026-07-13T19:30:00Z",
-        valid_until: "2026-07-13T23:00:00Z",
+        valid_from: "2026-07-13T09:30:00Z",
+        valid_until: "2026-07-13T20:00:00Z",
       }
     },
     {
@@ -72,7 +72,7 @@ export const TicketDeliveryEmail = ({
       code: "TCK-002-2026",
       ticket: {
         valid_from: "2026-07-13T19:30:00Z",
-        valid_until: "2026-07-13T23:00:00Z",
+        valid_until: "2026-07-13T20:00:00Z",
       }
     },
   ],
@@ -160,7 +160,7 @@ TicketDeliveryEmail.PreviewProps = {
       code: "TCK-001-2026",
       ticket: {
         valid_from: "2026-07-13T19:30:00Z",
-        valid_until: "2026-07-13T23:00:00Z",
+        valid_until: "2026-07-13T20:00:00Z",
       }
     },
     {
@@ -169,7 +169,7 @@ TicketDeliveryEmail.PreviewProps = {
       code: "TCK-002-2026",
       ticket: {
         valid_from: "2026-07-13T19:30:00Z",
-        valid_until: "2026-07-13T23:00:00Z",
+        valid_until: "2026-07-13T20:00:00Z",
       }
     },
   ],

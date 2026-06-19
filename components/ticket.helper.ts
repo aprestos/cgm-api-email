@@ -9,14 +9,14 @@ export const getTicketTitle = (
     return '-'
   }
 
-  const startDate = DateTime.fromISO(start).startOf('day')
-  const endDate = DateTime.fromISO(end).startOf('day')
+  const startDate = DateTime.fromISO(start, { zone: 'utc' }).startOf('day')
+  const endDate = DateTime.fromISO(end, { zone: 'utc' }).startOf('day')
 
   if (!startDate.isValid || !endDate.isValid || endDate < startDate) {
     return '-'
   }
 
-  if (startDate.hasSame(endDate, 'day')) {
+  if ((startDate.toISODate() === endDate.toISODate())) {
     return startDate.setLocale(locale).toLocaleString({
       weekday: 'long',
     })

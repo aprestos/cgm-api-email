@@ -80,7 +80,7 @@ export const styles: Record<string, CSSProperties> = {
     overflow: "hidden",
   },
   hero: {
-    padding: "48px 48px 24px",
+    padding: "24px 24px 24px",
     textAlign: "center",
   },
   heroIconWrap: {
@@ -121,7 +121,7 @@ export const styles: Record<string, CSSProperties> = {
     marginTop: "16px",
   },
   content: {
-    padding: "0 20px 20px",
+    padding: "0 10px 10px",
   },
   sectionTitle: {
     fontSize: "16px",
