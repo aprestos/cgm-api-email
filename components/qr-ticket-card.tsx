@@ -37,10 +37,10 @@ export const QrTicketCard = ({
       {attendeeName}
     </Text>
     <Img
-      src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=10&data=${ticketCode}`}
+      src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=20&data=${ticketCode}`}
       alt={`QR code for ${ticketCode}`}
-      width="180"
-      height="180"
+      width="300"
+      height="300"
       style={{ margin: "0 auto", borderRadius: "8px" }}
     />
   </Section>
