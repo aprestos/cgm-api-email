@@ -9,6 +9,8 @@ interface QrTicketCardProps {
   ticketCode: string;
 }
 
+const qrcodeSize: number = 300;
+
 export const QrTicketCard = ({
   attendeeName,
   title,
@@ -37,9 +39,9 @@ export const QrTicketCard = ({
       {attendeeName}
     </Text>
     <Img
-      src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=20&data=${ticketCode}`}
+      src={`https://api.qrserver.com/v1/create-qr-code/?size=${qrcodeSize}x${qrcodeSize}&margin=20&data=${ticketCode}`}
       alt={`QR code for ${ticketCode}`}
-      width="300"
+      width={qrcodeSize}
       height="300"
       style={{ margin: "0 auto", borderRadius: "8px" }}
     />
