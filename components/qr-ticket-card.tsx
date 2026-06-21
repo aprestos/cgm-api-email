@@ -42,7 +42,7 @@ export const QrTicketCard = ({
       src={`https://api.qrserver.com/v1/create-qr-code/?size=${qrcodeSize}x${qrcodeSize}&margin=20&data=${ticketCode}`}
       alt={`QR code for ${ticketCode}`}
       width={qrcodeSize}
-      height="300"
+      height={qrcodeSize}
       style={{ margin: "0 auto", borderRadius: "8px" }}
     />
   </Section>
