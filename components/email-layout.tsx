@@ -179,7 +179,7 @@ export const EmailLayout = ({
             <Text style={styles.footerText}>
               {footerText ??
                 `If you have any questions, feel free to contact us at ${
-                  supportEmail ?? "info@congrem.io"
+                  supportEmail ?? "info@congrem.com"
                 }.`}
             </Text>
             {/*<Text style={styles.footerText}>*/}
