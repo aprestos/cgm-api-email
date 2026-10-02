@@ -21,9 +21,33 @@ export const emailTheme = {
   },
 };
 
+/*
+ * The card only reads as a card on a wide screen. Below `md` the whole page
+ * takes the card's colour, so a phone shows the content edge to edge instead
+ * of a box inset by a few pixels of grey.
+ *
+ * The inline styles below are that narrow, flat version, and this stylesheet
+ * adds the grey page and the card's outline at 768px and up. A client that
+ * drops <style> keeps the flat layout on every screen, which still reads fine.
+ *
+ * The page colour sits on <body> through a class rather than on `styles.body`:
+ * react-email's <Body> moves its inline style onto an inner <td>, where an
+ * inline colour would cover whatever the media query sets on <body>.
+ */
+export const responsiveCss = `
+  .email-body { background-color: ${emailTheme.colors.panel}; }
+  @media (min-width: 768px) {
+    .email-body, .email-shell { background-color: ${emailTheme.colors.background} !important; }
+    .email-card {
+      /* rgba outline inverts gracefully — avoids hard-coded light border in dark mode */
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06) !important;
+      border-radius: ${emailTheme.radius.card} !important;
+    }
+  }
+`;
+
 export const styles: Record<string, CSSProperties> = {
   body: {
-    backgroundColor: emailTheme.colors.background,
     margin: 0,
     padding: 0,
     fontFamily:
@@ -34,7 +58,7 @@ export const styles: Record<string, CSSProperties> = {
   },
   shell: {
     width: "100%",
-    backgroundColor: emailTheme.colors.background,
+    backgroundColor: emailTheme.colors.panel,
     padding: "8px",
   },
   wrap: {
@@ -74,9 +98,6 @@ export const styles: Record<string, CSSProperties> = {
   },
   card: {
     backgroundColor: emailTheme.colors.panel,
-    // rgba outline inverts gracefully — avoids hard-coded light border in dark mode
-    boxShadow: "0 0 0 1px rgba(0,0,0,0.08), 0 1px 4px rgba(0, 0, 0, 0.06)",
-    borderRadius: emailTheme.radius.card,
     overflow: "hidden",
   },
   hero: {

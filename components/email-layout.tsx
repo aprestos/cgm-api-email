@@ -20,7 +20,7 @@ import {
   IconBrandInstagram,
 } from "@tabler/icons-react";
 
-import { styles } from "./email-theme.ts";
+import { responsiveCss, styles } from "./email-theme.ts";
 
 export interface EmailLayoutProps {
   preview: string;
@@ -81,11 +81,11 @@ export const EmailLayout = ({
       }
       <meta name="color-scheme" content="light dark" />
       <meta name="supported-color-schemes" content="light dark" />
-      <style>{`:root { color-scheme: light dark; }`}</style>
+      <style>{`:root { color-scheme: light dark; }${responsiveCss}`}</style>
     </Head>
     <Preview>{preview}</Preview>
-    <Body style={styles.body}>
-      <Container style={styles.shell}>
+    <Body className="email-body" style={styles.body}>
+      <Container className="email-shell" style={styles.shell}>
         <Container style={styles.wrap}>
           <Section style={styles.headerRow}>
             <Row>
@@ -118,7 +118,7 @@ export const EmailLayout = ({
             </Row>
           </Section>
 
-          <Container style={styles.card}>
+          <Container className="email-card" style={styles.card}>
             <Section style={styles.hero}>
               {heroIconUrl
                 ? (

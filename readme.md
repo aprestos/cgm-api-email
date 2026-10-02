@@ -37,9 +37,9 @@ Common building blocks live in `emails/components`:
 New examples built with the shared components:
 
 - `emails/order-confirmation.tsx`
-- `emails/payment-confirmation.tsx`
+- `emails/order-refunded.tsx`
 - `emails/ticket-delivery.tsx`
-- `emails/team-invitation.tsx`
+- `emails/sign-in-code.tsx` (sent by the Supabase Send Email hook, not `/emails`)
 
 ## Sending emails (API)
 
@@ -71,8 +71,8 @@ A small HTTP service renders any of the templates above and delivers it via
 Body fields: `to` (string or array, required), `from` (optional, defaults to
 `RESEND_FROM`), `subject` (optional, each template provides a default),
 `replyTo` (optional), and `data` (the template props). Valid `X-Email-Type`
-values: `ticket-delivery`, `order-confirmation`, `payment-confirmation`,
-`team-invitation` (also listed at `GET /health`).
+values: `ticket-delivery`, `order-confirmation`, `order-refunded` (also listed
+at `GET /health`).
 
 ## License
 
