@@ -58,7 +58,7 @@ const detailLine = {
 
 export const PaymentConfirmationEmail = ({
   tenant = {
-    contact: "info@congrem.io",
+    contact: "info@congrem.com",
     socialNetworks: { facebook: "", instagram: "", x: "" },
     logoUrl:
       "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
@@ -77,7 +77,7 @@ export const PaymentConfirmationEmail = ({
     preview={`Payment received - ${payment.receivedAmount}`}
     title="Payment received"
     subtitle=""
-    brandName="congrem.io"
+    brandName="congrem.com"
     brandLogoUrl={tenant.logoUrl}
     logoPlaceholderText="CE"
     heroIcon={IconCurrencyDollar}
@@ -132,7 +132,7 @@ export const PaymentConfirmationEmail = ({
 
 PaymentConfirmationEmail.PreviewProps = {
   tenant: {
-    contact: "info@congrem.io",
+    contact: "info@congrem.com",
     socialNetworks: {
       facebook: "https://facebook.com/example",
       instagram: "https://instagram.com/example",

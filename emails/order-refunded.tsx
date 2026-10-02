@@ -49,7 +49,7 @@ const valueStyle = {
 
 export const OrderRefundedEmail = ({
   tenant = {
-    contact: "info@congrem.io",
+    contact: "info@congrem.com",
     socialNetworks: { facebook: "", instagram: "", x: "" },
     logoUrl:
       "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
@@ -71,14 +71,14 @@ export const OrderRefundedEmail = ({
     preview={`Your refund of ${refund.refundAmount} is on its way`}
     title="Order refunded"
     subtitle=""
-    brandName="congrem.io"
+    brandName="congrem.com"
     brandLogoUrl={tenant.logoUrl}
     logoPlaceholderText="CE"
     supportEmail={tenant.contact}
     heroIconUrl="https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/app/moneybag-move-back.png"
     socialNetworks={tenant.socialNetworks}
     url={tenant.url}
-    footerText={`If you have any questions about your refund, contact us at ${tenant.contact ?? "info@congrem.io"}.`}
+    footerText={`If you have any questions about your refund, contact us at ${tenant.contact ?? "info@congrem.com"}.`}
   >
     <Section style={styles.section}>
       <Text style={styles.paragraph}>Hey {customer?.name},</Text>
@@ -157,14 +157,14 @@ export const OrderRefundedEmail = ({
 
 OrderRefundedEmail.PreviewProps = {
   tenant: {
-    contact: "info@congrem.io",
+    contact: "info@congrem.com",
     socialNetworks: {
       facebook: "https://facebook.com/example",
       instagram: "https://instagram.com/example",
     },
     logoUrl:
       "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
-    url: "https://congrem.io",
+    url: "https://congrem.com",
   },
   customer: {
     name: "Alex",

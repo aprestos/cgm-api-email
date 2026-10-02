@@ -135,7 +135,7 @@ export const OrderConfirmationEmail = ({
     preview={`Your order ${order.orderId} has been placed`}
     title="Order Confirmation"
     subtitle=""
-    brandName="congrem.io"
+    brandName="congrem.com"
     brandLogoUrl={tenant.logoUrl}
     supportEmail={tenant.contact}
     logoPlaceholderText="CE"
@@ -286,7 +286,7 @@ export const OrderConfirmationEmail = ({
 
 OrderConfirmationEmail.PreviewProps = {
   tenant: {
-    contact: "info@congrem.io",
+    contact: "info@congrem.com",
     socialNetworks: {
       facebook: "https://facebook.com/example",
       instagram: "https://instagram.com/example",
