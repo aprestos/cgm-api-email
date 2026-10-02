@@ -2,8 +2,6 @@ import type { ComponentType } from "react";
 
 import OrderConfirmationEmail from "../emails/order-confirmation";
 import OrderRefundedEmail from "../emails/order-refunded";
-import PaymentConfirmationEmail from "../emails/payment-confirmation";
-import TeamInvitationEmail from "../emails/team-invitation";
 import TicketDeliveryEmail from "../emails/ticket-delivery";
 
 /** A registered email template: the component plus a default subject builder. */
@@ -26,20 +24,10 @@ export const templates = {
     subject: (d) =>
       `Order confirmation${d?.edition?.name ? ` — ${d.edition.name}` : ""}`,
   },
-  "payment-confirmation": {
-    Component: PaymentConfirmationEmail,
-    subject: (d) =>
-      `Payment received${d?.edition?.name ? ` — ${d.edition.name}` : ""}`,
-  },
   "order-refunded": {
     Component: OrderRefundedEmail,
     subject: (d) =>
       `Your refund of ${d?.refund?.refundAmount ?? "your amount"} is on its way`,
-  },
-  "team-invitation": {
-    Component: TeamInvitationEmail,
-    subject: (d) =>
-      `You're invited to join ${d?.teamName ?? "the team"}`,
   },
 } satisfies Record<string, TemplateEntry>;
 
