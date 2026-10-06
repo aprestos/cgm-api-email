@@ -56,11 +56,6 @@ is particular to one email. Emails come in two ways, each mapped to it:
   through `POST /emails`, not through its queue (`data`: `tenant`,
   `customer`, and `code` or `resetUrl`).
 
-  During the transition this service keeps its own copy of the hook
-  (`POST /hooks/send-email`, needs `SEND_EMAIL_HOOK_SECRET` and
-  `SUPABASE_URL`), which brands the email from a `tenant` object in the
-  metadata instead. Remove it once Supabase Auth points to cgm-api-supabase.
-
 ## Sending emails (API)
 
 A small HTTP service renders any of the templates above and delivers it via

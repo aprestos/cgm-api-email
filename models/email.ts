@@ -1,14 +1,9 @@
 /*
  * The model every email template renders from.
  *
- * Emails reach this service two ways, with different bodies:
- * - `POST /emails`, from cgm-api-supabase, for the emails in `emails/`;
- *   `server/templates.ts` maps its body to the model;
- * - `POST /hooks/send-email`, from Supabase Auth, for the emails in
- *   `emails/auth/`; `server/send-email-hook.ts` maps the hook's payload, and
- *   the user's metadata in it, to the model.
- *
- * A template only sees the model, so it does not care which way it came.
+ * Emails reach this service through `POST /emails`, from cgm-api-supabase;
+ * `server/templates.ts` maps its body to the model. A template only sees the
+ * model, not the body it came from.
  */
 
 export interface SocialNetworks {
@@ -48,10 +43,7 @@ export const congremBrand: EmailBrand = {
   contact: "info@congrem.com",
 };
 
-/**
- * A tenant as both callers describe it: `data.tenant` in `/emails`, and
- * `tenant` in the user metadata the hook receives.
- */
+/** A tenant as cgm-api-supabase describes it: `data.tenant` in `/emails`. */
 export interface TenantData {
   name?: string;
   logoUrl?: string;
