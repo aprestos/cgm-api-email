@@ -24,22 +24,42 @@ Open [localhost:3000](http://localhost:3000) with your browser to see the result
 
 ## Reusable Components
 
-Common building blocks live in `emails/components`:
+Common building blocks live in `components`:
 
-- `email-layout.tsx` for shared structure, header, and footer.
-- `cta-button.tsx` for consistent primary actions.
-- `info-row.tsx` for key-value metadata blocks.
-- `order-items-table.tsx` for order lines.
+- `email-layout.tsx`, the frame every email shares: logo, header (icon, eyebrow,
+  title, subtitle), content and a footer with the social links. It adapts to
+  phones (`mobile:`, up to 480px) and narrow screens (`tablet:`, up to 640px)
+  and follows the reader's dark mode (`dark:`).
+- `email-ui.tsx` for the content: `Paragraph`, `Strong`, `SectionTitle`,
+  `Panel`, `DetailsList`, `ListRow` and `EmailButton`.
+- `email-theme.ts` and `email-fonts.tsx` for the Tailwind config (neutral,
+  with indigo as the accent) and the Inter font.
 - `qr-ticket-card.tsx` for QR-based ticket delivery.
 
-## Example Emails
+The header and social icons are PNGs in public Supabase storage
+(`images/app/mail`): Tabler icons, transparent, in `#615FFF` at 72px for the
+header and `#737373` at 54px for the social links.
 
-New examples built with the shared components:
+## Emails
 
-- `emails/order-confirmation.tsx`
-- `emails/order-refunded.tsx`
-- `emails/ticket-delivery.tsx`
-- `emails/sign-in-code.tsx` (sent by the Supabase Send Email hook, not `/emails`)
+Every template renders from one model, `EmailModel` in `models/email.ts`:
+`brand` (the tenant's, or congrem's), `recipient` and `content`, the part that
+is particular to one email. Emails come in two ways, each mapped to it:
+
+- `emails/`: `order-confirmation`, `order-refunded` and `ticket-delivery`,
+  sent by cgm-api-supabase through `POST /emails`. `server/templates.ts` maps
+  its `data` (`tenant`, `customer`, and the order, refund or tickets).
+- `emails/auth/`: `sign-in-code` and `password-reset`, the emails Supabase
+  Auth asks for through its Send Email hook. The hook lives in
+  cgm-api-supabase (`POST /emails/hook`): it loads the tenant by the
+  `tenant_id` in the user's metadata and sends the email here straight away
+  through `POST /emails`, not through its queue (`data`: `tenant`,
+  `customer`, and `code` or `resetUrl`).
+
+  During the transition this service keeps its own copy of the hook
+  (`POST /hooks/send-email`, needs `SEND_EMAIL_HOOK_SECRET` and
+  `SUPABASE_URL`), which brands the email from a `tenant` object in the
+  metadata instead. Remove it once Supabase Auth points to cgm-api-supabase.
 
 ## Sending emails (API)
 

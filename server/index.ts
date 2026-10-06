@@ -1,19 +1,16 @@
-import { createElement } from "react";
 import { serve } from "@hono/node-server";
-import { serveStatic } from "@hono/node-server/serve-static";
-import { render } from "@react-email/render";
 import { Hono } from "hono";
 import { Resend } from "resend";
 
 import { sendEmailHook } from "./send-email-hook";
-import { emailTypes, isEmailType, templates } from "./templates";
+import { type EmailData, emailTypes, isEmailType, renderTemplate } from "./templates";
 
 const PORT = Number(process.env.PORT ?? 3001);
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FROM = process.env.RESEND_FROM;
 const EMAIL_API_KEY = process.env.EMAIL_API_KEY;
 const SEND_EMAIL_HOOK_SECRET = process.env.SEND_EMAIL_HOOK_SECRET;
-const PUBLIC_URL = process.env.PUBLIC_URL?.replace(/\/+$/, "");
+const SUPABASE_URL = process.env.SUPABASE_URL;
 
 if (!RESEND_API_KEY) {
   console.warn(
@@ -34,16 +31,6 @@ interface SendBody {
 const app = new Hono();
 
 app.get("/health", (c) => c.json({ ok: true, types: emailTypes }));
-
-// Images the emails link to. Mail clients fetch them when the email is opened,
-// so they need an absolute URL, built from PUBLIC_URL.
-app.use("/static/*", serveStatic({ root: "./" }));
-
-if (!PUBLIC_URL) {
-  console.warn(
-    "[warn] PUBLIC_URL is not set — emails will show the brand name instead of the congrem logo.",
-  );
-}
 
 app.post("/emails", async (c) => {
   // 1. Optional shared-secret auth.
@@ -89,15 +76,10 @@ app.post("/emails", async (c) => {
     );
   }
 
-  const { Component, subject: defaultSubject } = templates[type];
-
-  // 4. Render the template to HTML.
-  let html: string;
-  let text: string;
+  // 4. Map the body to the template's model and render it.
+  let email: Awaited<ReturnType<typeof renderTemplate>>;
   try {
-    const element = createElement(Component, data);
-    html = await render(element);
-    text = await render(element, { plainText: true });
+    email = await renderTemplate(type, data as EmailData, [to].flat()[0]);
   } catch (err) {
     console.error(`[render] failed for type "${type}":`, err);
     return c.json({ error: "Failed to render email template." }, 500);
@@ -107,10 +89,10 @@ app.post("/emails", async (c) => {
   const { data: sent, error } = await resend.emails.send({
     from,
     to,
-    subject: subject ?? defaultSubject(data),
+    subject: subject ?? email.subject,
     replyTo,
-    html,
-    text,
+    html: email.html,
+    text: email.text,
   });
 
   if (error) {
@@ -128,7 +110,7 @@ if (SEND_EMAIL_HOOK_SECRET) {
     "/hooks",
     sendEmailHook({
       secret: SEND_EMAIL_HOOK_SECRET,
-      logoUrl: PUBLIC_URL && `${PUBLIC_URL}/static/congrem-logo-green@2x.png`,
+      supabaseUrl: SUPABASE_URL,
       send: async (email) => {
         if (!RESEND_FROM) throw new Error("RESEND_FROM is not set.");
         const { error } = await resend.emails.send({ from: RESEND_FROM, ...email });
@@ -136,6 +118,11 @@ if (SEND_EMAIL_HOOK_SECRET) {
       },
     }),
   );
+  if (!SUPABASE_URL) {
+    console.warn(
+      "[warn] SUPABASE_URL is not set — the hook will refuse password reset emails.",
+    );
+  }
 } else {
   console.warn(
     "[warn] SEND_EMAIL_HOOK_SECRET is not set — POST /hooks/send-email is disabled.",

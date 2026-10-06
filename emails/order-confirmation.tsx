@@ -1,36 +1,29 @@
-import { Column, Row, Section, Text } from "react-email";
-import { IconShoppingCart } from "@tabler/icons-react";
+import { Column, Text } from "react-email";
 
 import { EmailLayout } from "../components/email-layout";
-import { emailTheme, styles } from "../components/email-theme";
+import {
+  DetailsList,
+  ListRow,
+  Panel,
+  Paragraph,
+  SectionTitle,
+  Strong,
+} from "../components/email-ui";
+import type { EmailModel } from "../models/email";
 
 export interface OrderItem {
   name: string;
   category?: string;
   quantity: number;
   price: string;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
-export interface OrderConfirmationEmailProps {
-  tenant?: {
-    contact?: string;
-    socialNetworks?: {
-      facebook?: string;
-      instagram?: string;
-      x?: string;
-    };
-    logoUrl?: string;
-    url?: string;
-  };
+export interface OrderConfirmationContent {
   edition?: {
     name?: string;
   };
-  customer?: {
-    name?: string;
-    email?: string;
-  };
-  order?: {
+  order: {
     orderId?: string;
     orderDate?: string;
     orderLink?: string;
@@ -43,301 +36,108 @@ export interface OrderConfirmationEmailProps {
   };
 }
 
-const tableHeading = {
-  textTransform: "uppercase" as const,
-  fontWeight: 600,
-  color: emailTheme.colors.muted,
-  fontSize: "12px",
-  padding: "0 0 4px",
-};
-
-const headingCell = {
-  fontWeight: 500,
-  color: emailTheme.colors.text,
-  fontSize: "16px",
-  margin: 0,
-};
-
-const paragraph = {
-  margin: "0 0 24px",
-  fontSize: "15px",
-  lineHeight: "160%",
-  color: "#4b5563",
-};
-
-const summaryRow = {
-  fontSize: "15px",
-  lineHeight: "24px",
-  color: "#4b5563",
-  margin: 0,
-};
-
-const totalRow = {
-  fontSize: "20px",
-  lineHeight: "120%",
-  color: emailTheme.colors.text,
-  fontWeight: 600,
-  margin: 0,
-};
-
 export const OrderConfirmationEmail = ({
-  tenant = {
-    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    contact: "info@spielportugal.org",
-    socialNetworks: { facebook: "", instagram: "", x: "" },
-    logoUrl:
-      "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
-  },
-  edition = { name: "" },
-  customer = {
-    name: "Alexander",
-    email: "alexander@the.great",
-  },
-  order = {
-    orderId: "#682304",
-    orderDate: "19 December 2022",
-    orderLink: "https://example.com/orders/682304",
-    subtotal: "$189",
-    shipping: "$5",
-    tax: "$3",
-    totalAmount: "$196",
-    billingAddress: [
-      "Joshua M Arriaga",
-      "1673 Philadelphia Avenue",
-      "Wisconsin, 54818",
-    ],
-    items: [
-      {
-        name: "Magical notebook",
-        category: "Superheroes things",
-        quantity: 1,
-        price: "$399",
-        imageUrl: "https://placehold.co/64x64/f6f6f6/667382?text=1",
-      },
-      {
-        name: "Dragonfly eyes",
-        category: "Unnecessary things",
-        quantity: 1,
-        price: "$145",
-        imageUrl: "https://placehold.co/64x64/f6f6f6/667382?text=2",
-      },
-      {
-        name: "Fireman's pipe",
-        category: "Kitchen items",
-        quantity: 1,
-        price: "$400",
-        imageUrl: "https://placehold.co/64x64/f6f6f6/667382?text=3",
-      },
-    ],
-  },
-}: OrderConfirmationEmailProps) => (
+  brand,
+  recipient,
+  content: { order },
+}: EmailModel<OrderConfirmationContent>) => (
   <EmailLayout
     preview={`Your order ${order.orderId} has been placed`}
-    title="Order Confirmation"
-    subtitle=""
-    brandName="congrem.com"
-    brandLogoUrl={tenant.logoUrl}
-    supportEmail={tenant.contact}
-    logoPlaceholderText="CE"
-    heroIcon={IconShoppingCart}
-    heroIconUrl="https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/app/shopping-cart-copy.png"
-    url={tenant?.url}
+    icon="cart"
+    eyebrow="Order confirmed"
+    title="Thanks for your order"
+    brand={brand}
   >
-    <Section style={styles.section}>
-      <Text style={paragraph}>Hey {customer?.name},</Text>
-      <Text style={paragraph}>
-        Your order <strong>#{order.orderId}</strong>{" "}
-        has successfully been placed and you can find all the details below.
-        The tickets will be sent in a separate email in a few minutes.
-      </Text>
-    </Section>
+    <Paragraph className="mb-4">
+      Hey{recipient.name ? ` ${recipient.name}` : ""},
+    </Paragraph>
+    <Paragraph>
+      Your order <Strong>#{order.orderId}</Strong> has successfully been placed
+      and you can find all the details below. The tickets will be sent in a
+      separate email in a few minutes.
+    </Paragraph>
 
-    <Section style={styles.section}>
-      <Row>
-        <Column style={{ width: "72px" }}>
-          <Text style={tableHeading}></Text>
-        </Column>
-        <Column>
-          <Text style={tableHeading}></Text>
-        </Column>
-        <Column align="center" style={{ width: "50px" }}>
-          <Text style={tableHeading}>Qty</Text>
-        </Column>
-        <Column align="right" style={{ width: "80px" }}>
-          <Text style={tableHeading}>Price</Text>
-        </Column>
-      </Row>
-
-      {(order.items ?? []).map((item) => (
-        <Row key={`${item.name}-${item.price}`}>
-          {/*<Column style={{ width: "72px", padding: "4px 8px 4px 0" }}>*/}
-          {/*  <Img*/}
-          {/*    src={item.imageUrl}*/}
-          {/*    width="64"*/}
-          {/*    height="64"*/}
-          {/*    alt={item.name}*/}
-          {/*    style={{ borderRadius: "4px", backgroundColor: "#f6f6f6" }}*/}
-          {/*  />*/}
-          {/*</Column>*/}
-          <Column style={{ padding: "0" }}>
-            <Text style={{ ...summaryRow, margin: 0 }}>
-              <strong style={{ color: emailTheme.colors.text }}>
-                {item.name}
-              </strong>
-              <br />
-              <span style={{ color: emailTheme.colors.muted }}>
-                {item.category ?? ""}
-              </span>
+    <SectionTitle className="mt-8 mb-3">Order summary</SectionTitle>
+    <Panel>
+      {(order.items ?? []).map((item, index) => (
+        <ListRow key={`${item.name}-${item.price}`} first={index === 0}>
+          <Column className="py-4 align-top">
+            <Text className="my-0 text-[15px] leading-[22px] font-medium text-neutral-900 dark:text-white">
+              {item.name}
             </Text>
+            {item.category
+              ? (
+                <Text className="my-0 text-[13px] leading-[20px] text-neutral-500 dark:text-neutral-400">
+                  {item.category}
+                </Text>
+              )
+              : null}
           </Column>
-          <Column align="center" style={{ width: "50px", padding: "4px 8px" }}>
-            <Text style={{ ...summaryRow, margin: 0 }}>{item.quantity}</Text>
+          <Column
+            align="center"
+            className="w-[48px] py-4 text-center align-top text-[14px] leading-[22px] text-neutral-500 dark:text-neutral-400"
+          >
+            ×{item.quantity}
           </Column>
           <Column
             align="right"
-            style={{ width: "80px", padding: "4px 0 4px 8px" }}
+            className="w-[88px] py-4 text-right align-top text-[15px] leading-[22px] font-medium text-neutral-900 dark:text-white"
           >
-            <Text style={{ ...summaryRow, margin: 0 }}>{item.price}</Text>
+            {item.price}
           </Column>
-        </Row>
+        </ListRow>
       ))}
+      <ListRow first={!order.items?.length}>
+        <Column className="py-4 text-[15px] leading-[24px] font-semibold text-neutral-900 dark:text-white">
+          Total
+        </Column>
+        <Column
+          align="right"
+          className="py-4 text-right text-[18px] leading-[24px] font-semibold text-neutral-900 dark:text-white"
+        >
+          {order.totalAmount}
+        </Column>
+      </ListRow>
+    </Panel>
 
-      {/*<Row>*/}
-      {/*  <Column style={{ borderTop: `1px solid ${emailTheme.colors.border}` }}>*/}
-      {/*    <Text*/}
-      {/*      style={{ ...summaryRow, textAlign: "right", paddingTop: "8px" }}*/}
-      {/*    >*/}
-      {/*      Subtotal*/}
-      {/*    </Text>*/}
-      {/*  </Column>*/}
-      {/*  <Column*/}
-      {/*    align="right"*/}
-      {/*    style={{*/}
-      {/*      width: "90px",*/}
-      {/*      borderTop: `1px solid ${emailTheme.colors.border}`,*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <Text*/}
-      {/*      style={{ ...summaryRow, textAlign: "right", paddingTop: "8px" }}*/}
-      {/*    >*/}
-      {/*      {order.subtotal}*/}
-      {/*    </Text>*/}
-      {/*  </Column>*/}
-      {/*</Row>*/}
-      {/*<Row>*/}
-      {/*  <Column>*/}
-      {/*    <Text style={{ ...summaryRow, textAlign: "right" }}>Shipping</Text>*/}
-      {/*  </Column>*/}
-      {/*</Row>*/}
-      {/*<Row>*/}
-      {/*  <Column>*/}
-      {/*    <Text style={{ ...summaryRow, textAlign: "right" }}>Tax</Text>*/}
-      {/*  </Column>*/}
-      {/*  <Column align="right" style={{ width: "90px" }}>*/}
-      {/*    <Text style={{ ...summaryRow, textAlign: "right" }}>{order.tax}</Text>*/}
-      {/*  </Column>*/}
-      {/*</Row>*/}
-      <Row>
-        <Column>
-          <Text style={{ ...totalRow, textAlign: "right" }}>Total</Text>
-        </Column>
-        <Column align="right" style={{ width: "90px" }}>
-          <Text style={{ ...totalRow, textAlign: "right" }}>
-            {order.totalAmount}
-          </Text>
-        </Column>
-      </Row>
-    </Section>
-
-    <Section style={styles.section}>
-      <Row style={{ marginBottom: "16px" }}>
-        <Column>
-          <Text style={headingCell}>Order number</Text>
-          <Text style={summaryRow}>{order.orderId}</Text>
-        </Column>
-        <Column>
-          <Text style={headingCell}>Order date</Text>
-          <Text style={summaryRow}>{order.orderDate}</Text>
-        </Column>
-      </Row>
-      {/*<Row>*/}
-      {/*  <Column style={{}}>*/}
-      {/*    <Text style={headingCell}>Billing address</Text>*/}
-      {/*    <Text style={summaryRow}>*/}
-      {/*      {order.billingAddress.join("\n")}*/}
-      {/*    </Text>*/}
-      {/*  </Column>*/}
-      {/*</Row>*/}
-    </Section>
-
-    {/*<Section style={styles.section}>*/}
-    {/*  <Text style={{ ...summaryRow, margin: 0 }}>*/}
-    {/*    You can review this order anytime in your account:{" "}*/}
-    {/*    <Link*/}
-    {/*      href={order.orderLink}*/}
-    {/*      style={{ color: emailTheme.colors.primary, textDecoration: "none" }}*/}
-    {/*    >*/}
-    {/*      {order.orderLink}*/}
-    {/*    </Link>*/}
-    {/*  </Text>*/}
-    {/*</Section>*/}
+    <SectionTitle className="mt-8 mb-3">Details</SectionTitle>
+    <Panel>
+      <DetailsList
+        details={[
+          { label: "Order number", value: order.orderId },
+          { label: "Order date", value: order.orderDate },
+        ]}
+      />
+    </Panel>
   </EmailLayout>
 );
 
 OrderConfirmationEmail.PreviewProps = {
-  tenant: {
+  brand: {
+    name: "Kijult Weekend",
+    logoUrl:
+      "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
     contact: "info@congrem.com",
     socialNetworks: {
       facebook: "https://facebook.com/example",
       instagram: "https://instagram.com/example",
       x: "https://x.com/example",
     },
-    logoUrl:
-      "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
   },
-  edition: {
-    name: "Example Edition",
+  recipient: { name: "Alexander", email: "alexander@the.great" },
+  content: {
+    edition: { name: "Example Edition" },
+    order: {
+      orderId: "682304",
+      orderDate: "19 December 2022",
+      totalAmount: "$196",
+      items: [
+        { name: "Magical notebook", category: "Superheroes things", quantity: 1, price: "$399" },
+        { name: "Dragonfly eyes", category: "Unnecessary things", quantity: 1, price: "$145" },
+        { name: "Fireman's pipe", category: "Kitchen items", quantity: 1, price: "$400" },
+      ],
+    },
   },
-  customer: {
-    name: "Alexander",
-    email: "alexander@the.great",
-  },
-  order: {
-    orderId: "#682304",
-    orderDate: "19 December 2022",
-    orderLink: "https://example.com/orders/682304",
-    subtotal: "$189",
-    tax: "$3",
-    totalAmount: "$196",
-    billingAddress: [
-      "Joshua M Arriaga",
-      "1673 Philadelphia Avenue",
-      "Wisconsin, 54818",
-    ],
-    items: [
-      {
-        name: "Magical notebook",
-        category: "Superheroes things",
-        quantity: 1,
-        price: "$399",
-        imageUrl: "https://placehold.co/64x64/f6f6f6/667382?text=1",
-      },
-      {
-        name: "Dragonfly eyes",
-        category: "Unnecessary things",
-        quantity: 1,
-        price: "$145",
-        imageUrl: "https://placehold.co/64x64/f6f6f6/667382?text=2",
-      },
-      {
-        name: "Fireman's pipe",
-        category: "Kitchen items",
-        quantity: 1,
-        price: "$400",
-        imageUrl: "https://placehold.co/64x64/f6f6f6/667382?text=3",
-      },
-    ],
-  },
-} as OrderConfirmationEmailProps;
+} satisfies EmailModel<OrderConfirmationContent>;
 
 export default OrderConfirmationEmail;
