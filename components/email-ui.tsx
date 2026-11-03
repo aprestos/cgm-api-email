@@ -61,7 +61,7 @@ export const Box = ({
   children: ReactNode;
   className?: string;
 }) => (
-  <Section className={cx(line, "mobile:px-5 rounded-[16px] border px-6", className)}>
+  <Section className={cx(line, "mobile:px-4 rounded-[16px] border px-6", className)}>
     {children}
   </Section>
 );
