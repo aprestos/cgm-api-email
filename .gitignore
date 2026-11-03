@@ -144,3 +144,10 @@ vite.config.ts.timestamp-*
 
 
 .idea
+
+# Claude Code: personal settings and generated files
+**/.claude/settings.local.json
+.claude/worktrees/
+.claude/agent-memory-local/
+.claude/scheduled_tasks.lock
+.claude/**/*.bak
