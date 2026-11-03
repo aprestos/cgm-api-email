@@ -2,11 +2,12 @@ import { Column, Text } from "react-email";
 
 import { EmailLayout } from "../components/email-layout";
 import {
-  DetailsList,
-  ListRow,
-  Panel,
+  Box,
+  BoxRow,
+  BoxTitle,
+  BrandFigure,
+  Greeting,
   Paragraph,
-  SectionTitle,
   Strong,
 } from "../components/email-ui";
 import type { EmailModel } from "../models/email";
@@ -25,6 +26,8 @@ export interface OrderConfirmationContent {
   };
   order: {
     orderId?: string;
+    /** The order number people see, like "5B6C1D02". */
+    displayId?: string;
     orderDate?: string;
     orderLink?: string;
     subtotal?: string;
@@ -39,78 +42,64 @@ export interface OrderConfirmationContent {
 export const OrderConfirmationEmail = ({
   brand,
   recipient,
-  content: { order },
-}: EmailModel<OrderConfirmationContent>) => (
-  <EmailLayout
-    preview={`Your order ${order.orderId} has been placed`}
-    icon="cart"
-    eyebrow="Order confirmed"
-    title="Thanks for your order"
-    brand={brand}
-  >
-    <Paragraph className="mb-4">
-      Hey{recipient.name ? ` ${recipient.name}` : ""},
-    </Paragraph>
-    <Paragraph>
-      Your order <Strong>#{order.orderId}</Strong> has successfully been placed
-      and you can find all the details below. The tickets will be sent in a
-      separate email in a few minutes.
-    </Paragraph>
+  content: { edition, order },
+}: EmailModel<OrderConfirmationContent>) => {
+  // until every sender has `displayId`, the id it sent, already shortened
+  const orderNumber = order.displayId ?? order.orderId;
 
-    <SectionTitle className="mt-8 mb-3">Order summary</SectionTitle>
-    <Panel>
-      {(order.items ?? []).map((item, index) => (
-        <ListRow key={`${item.name}-${item.price}`} first={index === 0}>
-          <Column className="py-4 align-top">
-            <Text className="my-0 text-[15px] leading-[22px] font-medium text-neutral-900 dark:text-white">
-              {item.name}
-            </Text>
-            {item.category
-              ? (
-                <Text className="my-0 text-[13px] leading-[20px] text-neutral-500 dark:text-neutral-400">
-                  {item.category}
-                </Text>
-              )
-              : null}
-          </Column>
-          <Column
-            align="center"
-            className="w-[48px] py-4 text-center align-top text-[14px] leading-[22px] text-neutral-500 dark:text-neutral-400"
-          >
-            ×{item.quantity}
+  return (
+    <EmailLayout
+      preview={`Order #${orderNumber} is confirmed. Your tickets are on their way.`}
+      title="Thanks for your order"
+      brand={brand}
+    >
+      <Greeting name={recipient.name} />
+      <Paragraph>
+        Your order <Strong>#{orderNumber}</Strong> is confirmed. Your tickets
+        will arrive in a separate email within a few minutes.
+      </Paragraph>
+
+      <Box className="mt-8">
+        <BoxTitle detail={[edition?.name, order.orderDate].filter(Boolean).join(" · ")}>
+          Order summary
+        </BoxTitle>
+        {(order.items ?? []).map((item) => (
+          <BoxRow key={`${item.name}-${item.price}`}>
+            <Column className="py-4 align-top">
+              <Text className="m-0 text-[16px] leading-[22px] text-[#222222] dark:text-white">
+                {item.name} × {item.quantity}
+              </Text>
+              {item.category
+                ? (
+                  <Text className="m-0 text-[14px] leading-[20px] text-[#6a6a6a] dark:text-[#b0b0b0]">
+                    {item.category}
+                  </Text>
+                )
+                : null}
+            </Column>
+            <Column
+              align="right"
+              className="py-4 pl-4 text-right align-top text-[16px] leading-[22px] text-[#222222] dark:text-white"
+            >
+              {item.price}
+            </Column>
+          </BoxRow>
+        ))}
+        <BoxRow>
+          <Column className="py-5 text-[16px] leading-[22px] font-bold text-[#222222] dark:text-white">
+            Total
           </Column>
           <Column
             align="right"
-            className="w-[88px] py-4 text-right align-top text-[15px] leading-[22px] font-medium text-neutral-900 dark:text-white"
+            className="py-5 text-right text-[22px] leading-[28px] font-bold"
           >
-            {item.price}
+            <BrandFigure brand={brand}>{order.totalAmount}</BrandFigure>
           </Column>
-        </ListRow>
-      ))}
-      <ListRow first={!order.items?.length}>
-        <Column className="py-4 text-[15px] leading-[24px] font-semibold text-neutral-900 dark:text-white">
-          Total
-        </Column>
-        <Column
-          align="right"
-          className="py-4 text-right text-[18px] leading-[24px] font-semibold text-neutral-900 dark:text-white"
-        >
-          {order.totalAmount}
-        </Column>
-      </ListRow>
-    </Panel>
-
-    <SectionTitle className="mt-8 mb-3">Details</SectionTitle>
-    <Panel>
-      <DetailsList
-        details={[
-          { label: "Order number", value: order.orderId },
-          { label: "Order date", value: order.orderDate },
-        ]}
-      />
-    </Panel>
-  </EmailLayout>
-);
+        </BoxRow>
+      </Box>
+    </EmailLayout>
+  );
+};
 
 OrderConfirmationEmail.PreviewProps = {
   brand: {
@@ -118,6 +107,8 @@ OrderConfirmationEmail.PreviewProps = {
     logoUrl:
       "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
     contact: "info@congrem.com",
+    // synthetic, for the preview: no tenant has a colour yet
+    theme: { brandColor: "#D7263D" },
     socialNetworks: {
       facebook: "https://facebook.com/example",
       instagram: "https://instagram.com/example",
@@ -126,15 +117,16 @@ OrderConfirmationEmail.PreviewProps = {
   },
   recipient: { name: "Alexander", email: "alexander@the.great" },
   content: {
-    edition: { name: "Example Edition" },
+    edition: { name: "Kijult Weekend 2026" },
     order: {
-      orderId: "682304",
-      orderDate: "19 December 2022",
-      totalAmount: "$196",
+      // as cgm-api-supabase sends them: a short id, an en-GB date and time
+      orderId: "ord_0196a3c2-7b1e-7c40-9d2f-3a8e5b6c1d02",
+      displayId: "5B6C1D02",
+      orderDate: "2 May 2026 at 14:32",
+      totalAmount: "€78.00",
       items: [
-        { name: "Magical notebook", category: "Superheroes things", quantity: 1, price: "$399" },
-        { name: "Dragonfly eyes", category: "Unnecessary things", quantity: 1, price: "$145" },
-        { name: "Fireman's pipe", category: "Kitchen items", quantity: 1, price: "$400" },
+        { name: "Weekend pass", category: "Saturday and Sunday", quantity: 2, price: "€60.00" },
+        { name: "Saturday pass", category: "Saturday only", quantity: 1, price: "€18.00" },
       ],
     },
   },

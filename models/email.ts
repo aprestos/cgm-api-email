@@ -12,6 +12,12 @@ export interface SocialNetworks {
   x?: string;
 }
 
+/** How a brand looks. */
+export interface Theme {
+  /** `#rrggbb`: the bar under the title, the button, the key figure. */
+  brandColor?: string;
+}
+
 /** Whose branding an email carries: a tenant's, or congrem's own. */
 export interface EmailBrand {
   /** Alt text of the logo, shown as text when there is no logo, and the copyright holder. */
@@ -21,6 +27,7 @@ export interface EmailBrand {
   url?: string;
   /** Support address, shown in the footer. */
   contact?: string;
+  theme?: Theme;
   socialNetworks?: SocialNetworks;
 }
 
@@ -41,6 +48,8 @@ export const congremBrand: EmailBrand = {
   logoUrl:
     "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/app/congrem-logo-green@2x.png",
   contact: "info@congrem.com",
+  // the green of the logo, so congrem's emails carry one colour
+  theme: { brandColor: "#1F7A5C" },
 };
 
 /** A tenant as cgm-api-supabase describes it: `data.tenant` in `/emails`. */
@@ -49,6 +58,7 @@ export interface TenantData {
   logoUrl?: string;
   url?: string;
   contact?: string;
+  theme?: Theme;
   socialNetworks?: SocialNetworks;
 }
 
@@ -60,6 +70,7 @@ export function brandFromTenant(tenant?: TenantData): EmailBrand {
     logoUrl: tenant.logoUrl,
     url: tenant.url,
     contact: tenant.contact,
+    theme: tenant.theme,
     socialNetworks: tenant.socialNetworks,
   };
 }

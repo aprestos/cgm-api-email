@@ -46,6 +46,77 @@ describe("templates", () => {
     expect(model.content.tickets).toEqual([]);
   });
 
+  it("uses the tenant's colour", async () => {
+    const email = await renderTemplate(
+      "sign-in-code",
+      { tenant: { name: "Kijult Weekend", theme: { brandColor: "#D7263D" } }, code: "305805" },
+      "alex@example.com",
+    );
+
+    expect(email.html).toContain("background-color:#D7263D");
+  });
+
+  it("shows a ticket's name and days, or falls back to its validity", async () => {
+    const ticket = (code: string, extra: object) => ({
+      recipient_name: "Alex",
+      recipient_email: "alex@example.com",
+      code,
+      ticket: {
+        valid_from: "2026-06-13T10:00:00Z",
+        valid_until: "2026-06-14T20:00:00Z",
+        ...extra,
+      },
+    });
+    const email = await renderTemplate(
+      "ticket-delivery",
+      {
+        customer: { name: "Alex" },
+        tickets: [
+          ticket("TCK-1", { name: "Weekend pass", days: ["2026-06-14", "2026-06-13"] }),
+          ticket("TCK-2", {}),
+        ],
+      },
+      "alex@example.com",
+    );
+
+    expect(email.text).toContain("Weekend pass · Sat\u00a013\u00a0Jun, Sun\u00a014\u00a0Jun");
+    expect(email.text).toContain("2 days · Sat 13 – Sun 14 Jun");
+  });
+
+  it("shows the displayId, not the id, for orders, refunds and tickets", async () => {
+    const id = "ord_0196a3c2-7b1e-7c40-9d2f-3a8e5b6c1d02";
+    const order = await renderTemplate(
+      "order-confirmation",
+      { order: { orderId: id, displayId: "A1B2C3" } },
+      "alex@example.com",
+    );
+    const refund = await renderTemplate(
+      "order-refunded",
+      { refund: { orderId: id, displayId: "A1B2C3", refundAmount: "€78.00" } },
+      "alex@example.com",
+    );
+    const tickets = await renderTemplate(
+      "ticket-delivery",
+      {
+        tickets: [{
+          recipient_name: "Alex",
+          recipient_email: "alex@example.com",
+          code: "secret-qr-payload",
+          displayId: "TCK-001",
+          ticket: { valid_from: "2026-06-13T10:00:00Z", valid_until: "2026-06-13T20:00:00Z" },
+        }],
+      },
+      "alex@example.com",
+    );
+
+    expect(order.text).toContain("#A1B2C3");
+    expect(order.text).not.toContain(id);
+    expect(refund.text).toContain("A1B2C3");
+    expect(refund.text).not.toContain("0196A3C2");
+    expect(tickets.text).toContain("TCK-001");
+    expect(tickets.text).not.toContain("secret-qr-payload");
+  });
+
   it("renders with the default subject", async () => {
     const email = await renderTemplate(
       "order-refunded",
@@ -54,7 +125,7 @@ describe("templates", () => {
     );
 
     expect(email.subject).toBe("Your refund of $196.00 is on its way");
-    expect(email.text).toContain("Hey Alex,");
+    expect(email.text).toContain("Hi Alex,");
     expect(email.text).toContain("$196.00");
   });
 
@@ -67,7 +138,8 @@ describe("templates", () => {
       "alex@example.com",
     );
     expect(signIn.subject).toBe("305805 is your Kijult Weekend sign-in code");
-    expect(signIn.text).toContain("Hi Alex, enter this code to sign in to Kijult Weekend.");
+    expect(signIn.text).toContain("Hi Alex,");
+    expect(signIn.text).toContain("Use this code to sign in to Kijult Weekend.");
 
     const reset = await renderTemplate(
       "password-reset",

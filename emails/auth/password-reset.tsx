@@ -1,7 +1,8 @@
 import { Link, Section, Text } from "react-email";
 
+import { brandColors } from "../../components/brand-colors";
 import { EmailLayout } from "../../components/email-layout";
-import { EmailButton, Paragraph } from "../../components/email-ui";
+import { EmailButton, Greeting, line, Paragraph } from "../../components/email-ui";
 import { congremBrand, type EmailModel } from "../../models/email";
 
 export interface PasswordResetContent {
@@ -17,26 +18,32 @@ export const PasswordResetEmail = ({
 }: EmailModel<PasswordResetContent>) => (
   <EmailLayout
     preview={`Reset your ${brand.name} password`}
-    icon="lock"
     title="Reset your password"
-    subtitle={`${recipient.name ? `Hi ${recipient.name}, we` : "We"} received a request to reset the password of your ${brand.name} account.`}
     brand={brand}
   >
-    <EmailButton href={resetUrl}>Reset password</EmailButton>
-
-    <Paragraph className="mt-8">
-      The link can only be used once. If you did not ask to reset your
-      password, you can safely ignore this email: your password stays the same
-      until you set a new one.
+    <Greeting name={recipient.name} />
+    <Paragraph>
+      We got a request to reset your {brand.name} password. Choose a new one
+      with the button below.
     </Paragraph>
 
-    <Section className="mt-8 border-0 border-t border-solid border-neutral-200 pt-6 dark:border-neutral-700">
-      <Text className="mt-0 mb-1 text-[13px] leading-[20px] text-neutral-500 dark:text-neutral-400">
-        If the button does not work, copy this link into your browser:
+    <Section className="mt-6">
+      <EmailButton brand={brand} href={resetUrl}>Choose a new password</EmailButton>
+    </Section>
+
+    <Paragraph muted className="mt-6">
+      The link works only once. If you didn&apos;t ask for this, you can ignore
+      this email and your password stays the same.
+    </Paragraph>
+
+    <Section className={`${line} mt-8 border-t pt-6`}>
+      <Text className="mt-0 mb-1 text-[14px] leading-[20px] text-[#6a6a6a] dark:text-[#b0b0b0]">
+        Button not working? Paste this link into your browser:
       </Text>
       <Link
         href={resetUrl}
-        className="block text-[13px] leading-[20px] break-all text-indigo-600 no-underline dark:text-indigo-400"
+        className="brand-text block text-[14px] leading-[20px] break-all no-underline"
+        style={{ color: brandColors(brand).text }}
       >
         {resetUrl}
       </Link>

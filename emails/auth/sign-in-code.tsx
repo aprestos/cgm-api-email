@@ -1,7 +1,7 @@
 import { Section, Text } from "react-email";
 
 import { EmailLayout } from "../../components/email-layout";
-import { Paragraph } from "../../components/email-ui";
+import { Greeting, Paragraph } from "../../components/email-ui";
 import { congremBrand, type EmailModel } from "../../models/email";
 
 export interface SignInCodeContent {
@@ -16,24 +16,23 @@ export const SignInCodeEmail = ({
 }: EmailModel<SignInCodeContent>) => (
   <EmailLayout
     preview={`${code} is your ${brand.name} sign-in code`}
-    icon="lock"
     title="Your sign-in code"
-    subtitle={`${recipient.name ? `Hi ${recipient.name}, enter` : "Enter"} this code to sign in to ${brand.name}.`}
     brand={brand}
   >
-    <Section className="rounded-[12px] border border-solid border-neutral-200 bg-neutral-50 px-6 py-6 text-center dark:border-neutral-700 dark:bg-neutral-800">
+    <Greeting name={recipient.name} />
+    <Paragraph>Use this code to sign in to {brand.name}.</Paragraph>
+    <Section className="mt-6 rounded-[16px] bg-[#f7f7f7] py-6 text-center dark:bg-[#262626]">
       <Text
-        className="mobile:text-[28px] my-0 text-[34px] leading-[40px] font-semibold text-neutral-900 dark:text-white"
+        className="mobile:text-[32px] mobile:leading-[40px] m-0 text-[40px] leading-[48px] font-bold text-[#222222] dark:text-white"
         // letter-spacing also trails the last digit; indent by as much to re-centre
-        style={{ letterSpacing: "0.3em", textIndent: "0.3em" }}
+        style={{ letterSpacing: "0.25em", textIndent: "0.25em" }}
       >
         {code}
       </Text>
     </Section>
-
-    <Paragraph className="mt-6">
-      Do not share this code with anyone. If you did not try to sign in, you
-      can safely ignore this email.
+    <Paragraph muted className="mt-6">
+      Never share this code with anyone. If you didn&apos;t try to sign in, you
+      can ignore this email.
     </Paragraph>
   </EmailLayout>
 );
