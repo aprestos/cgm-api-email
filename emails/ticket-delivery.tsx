@@ -110,7 +110,7 @@ export const TicketDeliveryEmail = ({
           validity={validDays(ticket)}
           ticketCode={ticket.code}
           // until every sender has `displayId`, the code itself
-          displayId={ticket.displayId ?? ticket.code}
+          displayId={ticket.displayId ?? ""}
         />
       ))}
     </EmailLayout>
