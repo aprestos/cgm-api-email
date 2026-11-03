@@ -17,7 +17,7 @@ Renders Congrem's transactional emails with React Email and sends them through R
   - `content`: the part specific to one email
 - `server/templates.ts` maps the `X-Email-Type` header and the request's `data` to a template, and owns the list of valid types.
 - `emails/*.tsx` are order and ticket emails. `emails/auth/*.tsx` are the emails for the Supabase Auth Send Email hook.
-- `components/` holds `email-layout.tsx` (the shared frame), `email-ui.tsx` (content blocks), `email-theme.ts` (Tailwind config), `qr-ticket-card.tsx`, and helpers.
+- `components/` holds `email-layout.tsx` (the shared frame), `brand-colors.ts` (colours from the tenant's `brandColor`), `email-ui.tsx` (content blocks), `email-theme.ts` (Tailwind config), `qr-ticket-card.tsx`, and helpers.
 
 ## Rules
 

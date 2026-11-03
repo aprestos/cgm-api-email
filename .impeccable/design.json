@@ -1,0 +1,431 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-03T12:05:50.017219+00:00",
+  "title": "Design System: Congrem transactional emails",
+  "extensions": {
+    "colorMeta": {
+      "brand-congrem": {
+        "role": "primary",
+        "displayName": "Congrem Logo Green",
+        "canonical": "#1F7A5C",
+        "note": "Congrem's own brand only. Tenants use their own brandColor, derived by brand-colors.ts.",
+        "tonalRamp": [
+          "#0b2a20",
+          "#124634",
+          "#1a6249",
+          "#1f7a5c",
+          "#4c957d",
+          "#82b9a5",
+          "#b6d8cb",
+          "#e6f2ed"
+        ]
+      },
+      "brand-neutral-fallback": {
+        "role": "primary",
+        "displayName": "Neutral Ink Fallback",
+        "canonical": "#222222",
+        "note": "A tenant without brandColor. Dark mode turns light: #e5e5e5 fill with ink text, white figures.",
+        "tonalRamp": [
+          "#111111",
+          "#222222",
+          "#3a3a3a",
+          "#5a5a5a",
+          "#7a7a7a",
+          "#e5e5e5",
+          "#c4c4c4",
+          "#ececec"
+        ]
+      },
+      "on-brand-ink": {
+        "role": "neutral",
+        "displayName": "On-Brand Ink",
+        "canonical": "#222222",
+        "tonalRamp": [
+          "#0b0c0f",
+          "#222222",
+          "#2a2d35",
+          "#454953",
+          "#666b76",
+          "#8d919a",
+          "#b9bcc2",
+          "#e6e7ea"
+        ]
+      },
+      "page": {
+        "role": "neutral",
+        "displayName": "Page White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#262626",
+          "#3a3a3a",
+          "#6a6a6a",
+          "#b0b0b0",
+          "#dddddd",
+          "#ececec",
+          "#f7f7f7",
+          "#ffffff"
+        ]
+      },
+      "page-dark": {
+        "role": "neutral",
+        "displayName": "Night Page",
+        "canonical": "#161616",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#161616",
+          "#262626",
+          "#3a3a3a",
+          "#6a6a6a",
+          "#b0b0b0",
+          "#e5e5e5",
+          "#ffffff"
+        ]
+      },
+      "text-strong": {
+        "role": "neutral",
+        "displayName": "Strong Ink",
+        "canonical": "#222222",
+        "tonalRamp": [
+          "#111111",
+          "#222222",
+          "#3a3a3a",
+          "#6a6a6a",
+          "#b0b0b0",
+          "#dddddd",
+          "#ececec",
+          "#f7f7f7"
+        ]
+      },
+      "text-body-dark": {
+        "role": "neutral",
+        "displayName": "Body Ink Dark",
+        "canonical": "#e5e5e5",
+        "tonalRamp": [
+          "#262626",
+          "#3a3a3a",
+          "#6a6a6a",
+          "#e5e5e5",
+          "#b0b0b0",
+          "#cfcfcf",
+          "#e5e5e5",
+          "#f7f7f7"
+        ]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Quiet Grey",
+        "canonical": "#6a6a6a",
+        "tonalRamp": [
+          "#222222",
+          "#3a3a3a",
+          "#525252",
+          "#6a6a6a",
+          "#8a8a8a",
+          "#b0b0b0",
+          "#dddddd",
+          "#f7f7f7"
+        ]
+      },
+      "text-muted-dark": {
+        "role": "neutral",
+        "displayName": "Quiet Grey (dark)",
+        "canonical": "#b0b0b0",
+        "tonalRamp": [
+          "#262626",
+          "#3a3a3a",
+          "#6a6a6a",
+          "#e5e5e5",
+          "#b0b0b0",
+          "#cfcfcf",
+          "#e5e5e5",
+          "#f7f7f7"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#dddddd",
+        "tonalRamp": [
+          "#3a3a3a",
+          "#6a6a6a",
+          "#e5e5e5",
+          "#b0b0b0",
+          "#cfcfcf",
+          "#dddddd",
+          "#ececec",
+          "#f7f7f7"
+        ]
+      },
+      "hairline-dark": {
+        "role": "neutral",
+        "displayName": "Hairline (dark)",
+        "canonical": "#3a3a3a",
+        "tonalRamp": [
+          "#161616",
+          "#262626",
+          "#3a3a3a",
+          "#525252",
+          "#6a6a6a",
+          "#e5e5e5",
+          "#b0b0b0",
+          "#dddddd"
+        ]
+      },
+      "code-well": {
+        "role": "neutral",
+        "displayName": "Code Well",
+        "canonical": "#f7f7f7",
+        "tonalRamp": [
+          "#3a3a3a",
+          "#6a6a6a",
+          "#b0b0b0",
+          "#dddddd",
+          "#ececec",
+          "#f2f2f2",
+          "#f7f7f7",
+          "#ffffff"
+        ]
+      },
+      "code-well-dark": {
+        "role": "neutral",
+        "displayName": "Code Well (dark)",
+        "canonical": "#262626",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#161616",
+          "#262626",
+          "#3a3a3a",
+          "#525252",
+          "#6a6a6a",
+          "#b0b0b0",
+          "#e5e5e5"
+        ]
+      }
+    },
+    "brandDerivation": {
+      "source": "components/brand-colors.ts, brandColors(brand)",
+      "fallback": "#222222 for a tenant without brandColor; Congrem itself uses #1F7A5C",
+      "outputs": {
+        "color": "brandColor as given: bar and button fill",
+        "onColor": "#ffffff or #222222, whichever contrasts more with color",
+        "text": "color mixed toward #222222 in 10% steps until >= 4.5:1 on #ffffff",
+        "darkText": "color mixed toward #ffffff in 10% steps until >= 4.5:1 on #161616",
+        "darkFill": "color if >= 3:1 on #161616, else darkText",
+        "darkOnFill": "#ffffff or #222222, whichever contrasts more with darkFill"
+      },
+      "darkMode": "Inline styles carry light values; brandCss(brand) in <head> overrides .brand-text (color) and .brand-fill (background and color) under prefers-color-scheme: dark",
+      "examples": {
+        "#1F7A5C": {
+          "text": "#1F7A5C",
+          "onColor": "#ffffff",
+          "darkText": "#4c957d",
+          "darkFill": "#1F7A5C"
+        },
+        "#D7263D": {
+          "text": "#D7263D",
+          "onColor": "#ffffff",
+          "darkText": "#df5164",
+          "darkFill": "#D7263D"
+        },
+        "#F5C400": {
+          "text": "#866e0f",
+          "onColor": "#222222",
+          "darkText": "#F5C400",
+          "darkFill": "#F5C400"
+        },
+        "none": {
+          "color": "#222222",
+          "text": "#222222",
+          "onColor": "#ffffff",
+          "darkText": "#ffffff",
+          "darkFill": "#e5e5e5",
+          "darkOnFill": "#222222"
+        }
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "The email's title, one per email, over the brand bar."
+      },
+      "headline-mobile": {
+        "displayName": "Headline (phone)",
+        "purpose": "The title at 480px and below."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "The sign-in code only; letter-spacing 0.25em with an equal text-indent to re-centre. 32px/40px on phone."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "The order total, in the brand text colour."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Box titles, ticket attendee name, text logo."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "The note."
+      },
+      "row": {
+        "displayName": "Row",
+        "purpose": "Detail rows, line items, event date and venue, ticket validity."
+      },
+      "body-muted": {
+        "displayName": "Body Muted",
+        "purpose": "What comes after the point of the email."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Box-title detail, item category, ticket n of m, ticket code, footer."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "The primary action."
+      }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "max-width: 480px",
+        "purpose": "Phones: tighter padding, 26px title, full-width button."
+      },
+      {
+        "name": "dark",
+        "value": "prefers-color-scheme: dark",
+        "purpose": "Night page, white titles, lighter greys, head-borne brand colours."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action in the brand colour; full width on a phone. Shown with Congrem green.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Reset password</a>",
+      "css": ".ds-btn-primary { display: inline-block; background: #1F7A5C; color: #ffffff; padding: 14px 28px; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 17px; line-height: 22px; font-weight: 600; text-align: center; text-decoration: none; } .ds-btn-primary:hover { background: #1a6249; } .ds-btn-primary:focus-visible { outline: 2px solid #1F7A5C; outline-offset: 2px; }"
+    },
+    {
+      "name": "Title with Brand Bar",
+      "kind": "custom",
+      "refersTo": "brand-bar",
+      "description": "The email's title and the 48x4 bar of the brand colour under it.",
+      "html": "<div class=\"ds-title-wrap\"><h1 class=\"ds-title\">Thanks for your order</h1><div class=\"ds-bar\"></div></div>",
+      "css": ".ds-title-wrap { background: #ffffff; padding: 24px 32px; } .ds-title { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 32px; line-height: 38px; font-weight: 700; letter-spacing: -0.01em; color: #222222; } .ds-bar { margin-top: 16px; width: 48px; height: 4px; border-radius: 2px; background: #1F7A5C; }"
+    },
+    {
+      "name": "Box with Detail Rows",
+      "kind": "card",
+      "refersTo": "box",
+      "description": "Outlined 16px box with a bold title, a muted detail line and hairline label/value rows.",
+      "html": "<div class=\"ds-box\"><div class=\"ds-box-title\">Refund details<div class=\"ds-box-detail\">2 May 2026</div></div><div class=\"ds-row\"><span class=\"ds-row-label\">Refund amount</span><span class=\"ds-row-value ds-figure\">&euro;78.00</span></div><div class=\"ds-row\"><span class=\"ds-row-label\">Order number</span><span class=\"ds-row-value\">ORD_0196A3C2</span></div></div>",
+      "css": ".ds-box { background: #ffffff; border: 1px solid #dddddd; border-radius: 16px; padding: 0 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 516px; } .ds-box-title { padding: 20px 0 12px; font-size: 20px; line-height: 26px; font-weight: 700; color: #222222; } .ds-box-detail { margin-top: 4px; font-size: 14px; line-height: 20px; font-weight: 400; color: #6a6a6a; } .ds-row { display: table; width: 100%; border-top: 1px solid #dddddd; padding: 16px 0; font-size: 16px; line-height: 22px; } .ds-row-label { display: table-cell; color: #6a6a6a; } .ds-row-value { display: table-cell; text-align: right; color: #222222; } .ds-figure { color: #1F7A5C; font-weight: 700; }"
+    },
+    {
+      "name": "Paragraphs",
+      "kind": "custom",
+      "refersTo": "body",
+      "description": "Body note at 17px and the muted follow-up at 15px.",
+      "html": "<div class=\"ds-copy\"><p class=\"ds-p\">Your order <strong>#ORD_0196A3C2</strong> has been placed and you can find all the details below.</p><p class=\"ds-p-muted\">The link can only be used once. If you did not ask for it, you can safely ignore this email.</p></div>",
+      "css": ".ds-copy { background: #ffffff; padding: 16px 32px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 516px; } .ds-p { margin: 0; font-size: 17px; line-height: 26px; color: #222222; } .ds-p strong { font-weight: 700; color: #222222; } .ds-p-muted { margin: 24px 0 0; font-size: 15px; line-height: 24px; color: #6a6a6a; }"
+    },
+    {
+      "name": "Code Well",
+      "kind": "custom",
+      "refersTo": "code-well",
+      "description": "Grey 16px tray holding the sign-in code, tracked and re-centred.",
+      "html": "<div class=\"ds-code-well\"><div class=\"ds-code\">482913</div></div>",
+      "css": ".ds-code-well { background: #f7f7f7; border-radius: 16px; padding: 24px 0; text-align: center; max-width: 516px; } .ds-code { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 40px; line-height: 48px; font-weight: 700; color: #222222; letter-spacing: 0.25em; text-indent: 0.25em; }"
+    },
+    {
+      "name": "Ticket Stub",
+      "kind": "card",
+      "refersTo": "ticket-stub-qr",
+      "description": "Outlined stub: attendee and validity, an inline 1px dashed tear line, the QR on white with its code.",
+      "html": "<div class=\"ds-stub\"><div class=\"ds-stub-top\"><div class=\"ds-stub-head\"><span class=\"ds-stub-name\">Alex Johnson</span><span class=\"ds-stub-pos\">1 of 2</span></div><div class=\"ds-stub-when\">2 days &middot; Sat 13 &ndash; Sun 14 Jun</div></div><div class=\"ds-stub-qr\"><svg width=\"160\" height=\"160\" viewBox=\"0 0 29 29\" aria-label=\"QR code\"><rect width=\"29\" height=\"29\" fill=\"#fff\"/><path d=\"M4 4h7v7H4zM18 4h7v7h-7zM4 18h7v7H4z\" fill=\"none\" stroke=\"#000\" stroke-width=\"1\" transform=\"translate(.5 .5)\"/><path d=\"M6 6h3v3H6zM20 6h3v3h-3zM6 20h3v3H6zM13 5h2v2h-2zM13 9h1v3h-1zM15 13h3v1h-3zM19 14h2v2h-2zM13 16h2v3h-2zM17 18h1v4h-1zM20 19h3v2h-3zM22 23h2v2h-2zM14 22h2v2h-2z\" fill=\"#000\"/></svg><div class=\"ds-stub-code\">TCK-001-2026</div></div></div>",
+      "css": ".ds-stub { border: 1px solid #dddddd; border-radius: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 516px; background: #ffffff; } .ds-stub-top { padding: 20px 24px 16px; } .ds-stub-head { display: table; width: 100%; } .ds-stub-name { display: table-cell; font-size: 20px; line-height: 26px; font-weight: 700; color: #222222; } .ds-stub-pos { display: table-cell; width: 72px; text-align: right; font-size: 14px; line-height: 26px; color: #6a6a6a; } .ds-stub-when { font-size: 16px; line-height: 24px; color: #222222; } .ds-stub-qr { border-top: 1px dashed #dddddd; border-radius: 0 0 16px 16px; background: #ffffff; padding: 12px 24px; text-align: center; } .ds-stub-qr svg { display: block; margin: 0 auto; } .ds-stub-code { margin: 0 0 8px; font-size: 14px; line-height: 20px; color: #6a6a6a; }"
+    },
+    {
+      "name": "Footer",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "Hairline rule, contact line and copyright in 14px muted grey.",
+      "html": "<div class=\"ds-footer\"><p class=\"ds-footer-line\">If you have any questions, feel free to contact us at info@congrem.com.</p><p class=\"ds-footer-line ds-footer-gap\">&copy; 2026 congrem. All rights reserved.</p></div>",
+      "css": ".ds-footer { border-top: 1px solid #dddddd; padding: 32px 32px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; max-width: 516px; background: #ffffff; } .ds-footer-line { margin: 0; font-size: 14px; line-height: 22px; color: #6a6a6a; } .ds-footer-gap { margin-top: 8px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Front Desk Note",
+    "overview": "Every email is a short, friendly note handed across a well-run front desk: whose convention it is, what happened, and the one thing you need, in that order. The system is user-pinned as \"simple and modern, lightly distinguishable\", in the manner of Airbnb and Booking emails: a white page, one roomy 580px column, the reader's own system font, generous air, and outlined rounded boxes that group the facts. It is light in density and quiet in tone; nothing on the page is decoration.\n\n\"Lightly distinguishable\" is carried by the tenant's colour and nothing else. It appears in three places: the 48×4 bar under the title, the primary button, and the one figure that matters (an order total, a refund amount, a fallback link). Everything else is neutral ink on white, or white on near-black in dark mode, so any tenant colour, from navy to pale yellow, sits in the same frame without fighting it.\n\nThe system replaces a rejected themed \"game card\" world (a framed card from the convention's deck, dark banner, grey page, Archivo display type). That costume, and the grey-page boxed receipt, are confirmed rejections.",
+    "keyCharacteristics": [
+      "White page, near-black (#161616) in dark mode; one 580px column, no card on a grey page.",
+      "System font stack only; bold 32px title over a short brand-colour bar.",
+      "16px-radius outlined boxes with a bold box title and hairline rows.",
+      "The tenant colour on the bar, the button and one figure; derived for contrast, never assumed.",
+      "Tickets as light stubs: who and when, a dashed tear line, the QR on white.",
+      "Tables only; degrades to a clean, wide, readable layout where `<style>` is dropped."
+    ],
+    "rules": [
+      {
+        "name": "The Derived Voice Rule",
+        "body": "The brand colour is input, not output. `brandColors(brand)` returns `color` (bar, button fill), `onColor` (white or on-brand ink, whichever contrasts more), `text` (the colour darkened toward ink in 10% steps until it reaches 4.5:1 on white), `darkText` (lightened toward white until 4.5:1 on the night page), `darkFill` (`color` if it reaches 3:1 on the night page, else `darkText`) and `darkOnFill`. Examples from the build: #1F7A5C keeps itself everywhere with white on fill and lightens to #4c957d as dark text; pale yellow #F5C400 takes ink on fill and darkens to #866e0f as text on white; the ink fallback turns light in dark mode: #e5e5e5 fill with ink text, white figures. Never pick a text or fill colour by eye.",
+        "section": "colors"
+      },
+      {
+        "name": "The Head-Borne Dark Rule",
+        "body": "Brand colours are inline styles (Tailwind only knows colours it was compiled with), and an inline style cannot follow the colour scheme. Dark-mode brand values ship once in `<head>` through `brandCss(brand)`: any element carrying the brand colour as text gets the `brand-text` class; any element filled with it (bar, button) gets `brand-fill`.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Places Rule",
+        "body": "The tenant colour appears on the title bar, the primary button and at most one figure or link per email. Neutrals carry everything else.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Web Font Rule",
+        "body": "The system stack only. No `@font-face`, no Google Fonts link; a face that only some clients load makes a different email in each.",
+        "section": "typography"
+      },
+      {
+        "name": "The Size-and-Weight Rule",
+        "body": "Hierarchy is size and bold. No uppercase tracked labels, no italics, no second family.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tables Only Rule",
+        "body": "Structure is React Email's `Section`, `Row` and `Column` (tables). No flex, no grid, no absolutely positioned layers.",
+        "section": "layout"
+      },
+      {
+        "name": "The Hairline Rule",
+        "body": "Grouping is an outline at 1px in the hairline colour, never a shadow, a tinted card or a grey page behind a white card.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Inline Dash Rule",
+        "body": "Dashed lines are written inline (`border-top: 1px dashed`), never with Tailwind's `border-dashed`: react-email resolves Tailwind's border-style variable once per email, so one `border-dashed` dashes every border in it.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** derive every brand use through `brandColors(brand)` and mark it `brand-text` or `brand-fill` so dark mode follows.",
+      "**Do** keep the tenant colour to the bar, the button and one figure or link.",
+      "**Do** group facts in one 16px-rounded hairline box with a bold 20px title and hairline rows.",
+      "**Do** keep the QR on white with its quiet zone inside the image, in every mode.",
+      "**Do** write dashed lines as inline styles.",
+      "**Do** check every email at 480px and in dark mode; the wide layout is the no-`<style>` fallback."
+    ],
+    "donts": [
+      "**Don't** hard-code a tenant's colour or fall back to Congrem green for a tenant; a tenant without a colour gets neutral ink.",
+      "**Don't** load a web font or add a second family.",
+      "**Don't** use flex, grid, shadows, or opacity colour modifiers (`bg-white/80` renders as `rgb(… / 80%)`, which older clients drop).",
+      "**Don't** use Tailwind's `border-dashed`.",
+      "**Don't** return to the themed game card: no framed deck card, dark banner, or grey page behind a white card.",
+      "**Don't** add uppercase tracked labels or kickers above the title; the logo and the bar already say whose email it is."
+    ]
+  }
+}

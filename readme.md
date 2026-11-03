@@ -26,19 +26,28 @@ Open [localhost:3000](http://localhost:3000) with your browser to see the result
 
 Common building blocks live in `components`:
 
-- `email-layout.tsx`, the frame every email shares: logo, header (icon, eyebrow,
-  title, subtitle), content and a footer with the social links. It adapts to
-  phones (`mobile:`, up to 480px) and narrow screens (`tablet:`, up to 640px)
-  and follows the reader's dark mode (`dark:`).
-- `email-ui.tsx` for the content: `Paragraph`, `Strong`, `SectionTitle`,
-  `Panel`, `DetailsList`, `ListRow` and `EmailButton`.
-- `email-theme.ts` and `email-fonts.tsx` for the Tailwind config (neutral,
-  with indigo as the accent) and the Inter font.
-- `qr-ticket-card.tsx` for QR-based ticket delivery.
+- `email-layout.tsx`, the frame every email shares: one roomy column on a
+  white page with the logo, a large title with a short bar of the brand
+  colour under it, the content, and a footer with the social links. It adapts
+  to phones (`mobile:`, up to 480px) and follows the reader's dark mode
+  (`dark:`).
+- `email-ui.tsx` for the content: `Paragraph`, `Strong`, `Box` (a rounded,
+  outlined group) with `BoxTitle`, `BoxRow` and `DetailsList`, `BrandFigure`
+  and `EmailButton`.
+- `brand-colors.ts` derives the bar, button and text colours from the
+  tenant's `theme.brandColor`, darkening a pale colour until text on white reads
+  (and lightening it on the dark page). Without one, a tenant gets neutral
+  ink; congrem's own emails use the green of its logo.
+- `email-theme.ts` for the Tailwind config. The font is the system's; there
+  is no web font, so every client shows the same type.
+- `qr-ticket-card.tsx`, a ticket as a stub: who and when, a dashed tear line,
+  and the QR code on white.
 
-The header and social icons are PNGs in public Supabase storage
-(`images/app/mail`): Tabler icons, transparent, in `#615FFF` at 72px for the
-header and `#737373` at 54px for the social links.
+Gmail, Apple Mail and Outlook.com must render the emails without visible
+degradation; Outlook for Windows gets a plain fallback (square corners).
+
+The social icons are PNGs in public Supabase storage (`images/app/mail`):
+Tabler icons, transparent, in `#737373` at 54px.
 
 ## Emails
 

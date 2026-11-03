@@ -2,11 +2,13 @@ import { Section } from "react-email";
 
 import { EmailLayout } from "../components/email-layout";
 import {
+  Box,
+  BoxTitle,
+  BrandFigure,
   DetailsList,
   EmailButton,
-  Panel,
+  Greeting,
   Paragraph,
-  SectionTitle,
   Strong,
 } from "../components/email-ui";
 import { shortId } from "../components/order.helper";
@@ -15,6 +17,8 @@ import { congremBrand, type EmailModel } from "../models/email";
 export interface OrderRefundedContent {
   refund: {
     orderId?: string;
+    /** The order number people see, like "5B6C1D02". */
+    displayId?: string;
     refundAmount?: string;
     refundDate?: string;
     refundMethod?: string;
@@ -29,44 +33,44 @@ export const OrderRefundedEmail = ({
   recipient,
   content: { refund },
 }: EmailModel<OrderRefundedContent>) => {
-  const orderNumber = refund.orderId ? shortId(refund.orderId) : "";
+  // until every sender has `displayId`, a short form of the id
+  const orderNumber = refund.displayId ?? (refund.orderId ? shortId(refund.orderId) : "");
 
   return (
     <EmailLayout
       preview={`Your refund of ${refund.refundAmount} is on its way`}
-      icon="refund"
-      eyebrow="Order refunded"
       title="Your refund is on its way"
       brand={brand}
-      footerText={`If you have any questions about your refund, contact us at ${brand.contact ?? congremBrand.contact}.`}
+      footerText={`Questions about your refund? Write to us at ${brand.contact ?? congremBrand.contact}.`}
     >
-      <Paragraph className="mb-4">
-        Hey{recipient.name ? ` ${recipient.name}` : ""},
-      </Paragraph>
+      <Greeting name={recipient.name} />
       <Paragraph>
-        We&apos;ve issued a refund of <Strong>{refund.refundAmount}</Strong> for
-        order <Strong>{orderNumber}</Strong>. Please allow 5–10 business days
-        for the amount to appear depending on your bank or card issuer.
+        We&apos;ve refunded <Strong>{refund.refundAmount}</Strong> for order{" "}
+        <Strong>{orderNumber}</Strong>. Depending on your bank or card issuer,
+        it can take 5–10 business days to show up in your account.
       </Paragraph>
 
-      <SectionTitle className="mt-8 mb-3">Refund details</SectionTitle>
-      <Panel>
+      <Box className="mt-8">
+        <BoxTitle detail={refund.refundDate}>Refund details</BoxTitle>
         <DetailsList
           details={[
-            { label: "Refund amount", value: refund.refundAmount },
-            { label: "Order number", value: orderNumber },
+            {
+              label: "Amount",
+              value: <BrandFigure brand={brand}><b>{refund.refundAmount}</b></BrandFigure>,
+            },
+            { label: "Order", value: orderNumber },
             ...(refund.reason ? [{ label: "Reason", value: refund.reason }] : []),
           ]}
         />
-      </Panel>
+      </Box>
 
       {refund.supportUrl
         ? (
           <Section className="mt-8">
-            <Paragraph className="mb-4">
-              Questions about this refund? Our support team is here to help.
+            <Paragraph className="mb-5">
+              Something not right? Our support team is happy to help.
             </Paragraph>
-            <EmailButton href={refund.supportUrl}>Contact support</EmailButton>
+            <EmailButton brand={brand} href={refund.supportUrl}>Contact support</EmailButton>
           </Section>
         )
         : null}
@@ -89,10 +93,12 @@ OrderRefundedEmail.PreviewProps = {
   recipient: { name: "Alex", email: "alex@example.com" },
   content: {
     refund: {
-      orderId: "682304ab-0000-4000-8000-000000000000",
-      refundAmount: "$196.00",
-      refundDate: "Jun 13, 2026",
-      reason: "Order cancelled by customer",
+      // as the Stripe webhook sends it: the full id, no date
+      orderId: "ord_0196a3c2-7b1e-7c40-9d2f-3a8e5b6c1d02",
+      displayId: "5B6C1D02",
+      refundAmount: "€78.00",
+      reason: "Refund requested by customer",
+      supportUrl: "https://congrem.com/support",
     },
   },
 } satisfies EmailModel<OrderRefundedContent>;

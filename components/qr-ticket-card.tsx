@@ -1,39 +1,74 @@
-import { Img, Section, Text } from "react-email";
+import { Column, Img, Row, Section, Text } from "react-email";
 
-interface QrTicketCardProps {
-  attendeeName: string;
-  title: string;
-  ticketCode: string;
-  className?: string;
-}
+import { cx, line } from "./email-ui";
 
-const qrcodeSize: number = 300;
+// the code itself about 190px: the rest is the quiet zone in the image
+const qrcodeSize: number = 256;
 
+/**
+ * A ticket as a stub: who and when on top, then under a dashed tear line the
+ * QR code on white, in dark mode too, because a scanner needs light around
+ * the code.
+ */
 export const QrTicketCard = ({
+  position,
+  count,
   attendeeName,
   title,
+  validity,
   ticketCode,
-  className = "",
-}: QrTicketCardProps) => (
-  <Section
-    className={`mobile:px-4 rounded-[12px] border border-solid border-neutral-200 px-6 pt-5 pb-6 text-center dark:border-neutral-700 ${className}`}
-  >
-    <Text className="my-0 text-[16px] leading-[24px] font-semibold text-neutral-900 dark:text-white">
-      {title}
-    </Text>
-    <Text className="my-0 text-[14px] leading-[20px] text-neutral-500 dark:text-neutral-400">
-      {attendeeName}
-    </Text>
-    {/* White in dark mode too: a scanner needs light around the code. */}
-    <Section className="mx-auto mt-4 max-w-[332px] rounded-[12px] bg-white p-4">
+  displayId,
+  className,
+}: {
+  /** 1-based, of `count` tickets in the email. */
+  position: number;
+  count: number;
+  attendeeName: string;
+  title: string;
+  /** The days it admits, like "Sat 13 Jun, Sun 14 Jun". */
+  validity?: string;
+  /** What the QR code encodes. */
+  ticketCode: string;
+  /** The ticket number printed under the code. */
+  displayId: string;
+  className?: string;
+}) => (
+  <Section className={cx(line, "rounded-[16px] border", className)}>
+    <Section className="mobile:px-5 px-6 pt-5 pb-4">
+      <Row>
+        <Column className="align-top text-[20px] leading-[26px] font-bold text-[#222222] dark:text-white">
+          {attendeeName}
+        </Column>
+        <Column
+          align="right"
+          className="w-[72px] text-right align-top text-[14px] leading-[26px] text-[#6a6a6a] dark:text-[#b0b0b0]"
+        >
+          {position} of {count}
+        </Column>
+      </Row>
+      <Text className="m-0 text-[16px] leading-[24px] text-[#222222] dark:text-[#e5e5e5]">
+        {[title, validity].filter(Boolean).join(" · ")}
+      </Text>
+    </Section>
+    <Section
+      className="rounded-b-[16px] bg-white px-6 py-3 text-center"
+      // inline, not `border-dashed`: react-email resolves Tailwind's
+      // border-style variable once per email, which would dash every line
+      style={{ borderTop: "1px dashed #dddddd" }}
+    >
       <Img
-        src={`https://api.qrserver.com/v1/create-qr-code/?size=${qrcodeSize}x${qrcodeSize}&margin=20&data=${ticketCode}`}
-        alt={`QR code for ${ticketCode}`}
+        // the quiet zone is in the image (`margin`), so the code keeps its
+        // light surround where a client darkens the white background
+        src={`https://api.qrserver.com/v1/create-qr-code/?size=${qrcodeSize * 2}x${qrcodeSize * 2}&margin=32&data=${encodeURIComponent(ticketCode)}`}
+        alt={`QR code for ticket ${displayId}`}
         width={qrcodeSize}
         height={qrcodeSize}
-        // shrinks with the card on a phone narrower than the code
+        // shrinks with the stub on a phone narrower than the code
         className="mx-auto block h-auto max-w-full"
       />
+      <Text className="m-0 mb-2 text-[14px] leading-[20px] text-[#6a6a6a]">
+        {displayId}
+      </Text>
     </Section>
   </Section>
 );
