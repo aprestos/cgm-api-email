@@ -2,15 +2,12 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { Resend } from "resend";
 
-import { sendEmailHook } from "./send-email-hook";
 import { type EmailData, emailTypes, isEmailType, renderTemplate } from "./templates";
 
 const PORT = Number(process.env.PORT ?? 3001);
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FROM = process.env.RESEND_FROM;
 const EMAIL_API_KEY = process.env.EMAIL_API_KEY;
-const SEND_EMAIL_HOOK_SECRET = process.env.SEND_EMAIL_HOOK_SECRET;
-const SUPABASE_URL = process.env.SUPABASE_URL;
 
 if (!RESEND_API_KEY) {
   console.warn(
@@ -102,32 +99,6 @@ app.post("/emails", async (c) => {
 
   return c.json({ id: sent?.id });
 });
-
-// Supabase Auth's Send Email hook. It authenticates with its own signature, so
-// it is registered only when that secret is configured.
-if (SEND_EMAIL_HOOK_SECRET) {
-  app.route(
-    "/hooks",
-    sendEmailHook({
-      secret: SEND_EMAIL_HOOK_SECRET,
-      supabaseUrl: SUPABASE_URL,
-      send: async (email) => {
-        if (!RESEND_FROM) throw new Error("RESEND_FROM is not set.");
-        const { error } = await resend.emails.send({ from: RESEND_FROM, ...email });
-        if (error) throw new Error(error.message);
-      },
-    }),
-  );
-  if (!SUPABASE_URL) {
-    console.warn(
-      "[warn] SUPABASE_URL is not set — the hook will refuse password reset emails.",
-    );
-  }
-} else {
-  console.warn(
-    "[warn] SEND_EMAIL_HOOK_SECRET is not set — POST /hooks/send-email is disabled.",
-  );
-}
 
 serve({ fetch: app.fetch, port: PORT }, ({ port }) => {
   console.log(`Email API listening on http://localhost:${port}`);

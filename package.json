@@ -9,7 +9,8 @@
     "start": "tsx --env-file-if-exists=.env server/index.ts",
     "start:dev": "tsx watch --env-file-if-exists=.env server/index.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
@@ -21,15 +22,16 @@
     "react-dom": "19.2.4",
     "react-email": "6.5.0",
     "resend": "^4.0.1",
-    "standardwebhooks": "^1.1.1",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@react-email/ui": "6.5.0",
     "@types/luxon": "^3.0.0",
+    "@types/node": "^22.20.5",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "tsx": "^4.19.2",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.9"
   }
 }
