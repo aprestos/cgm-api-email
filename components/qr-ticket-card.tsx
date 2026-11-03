@@ -34,7 +34,7 @@ export const QrTicketCard = ({
   className?: string;
 }) => (
   <Section className={cx(line, "rounded-[16px] border", className)}>
-    <Section className="mobile:px-5 px-6 pt-5 pb-4">
+    <Section className="mobile:px-4 px-6 pt-5 pb-4">
       <Row>
         <Column className="align-top text-[20px] leading-[26px] font-bold text-[#222222] dark:text-white">
           {attendeeName}
@@ -51,7 +51,7 @@ export const QrTicketCard = ({
       </Text>
     </Section>
     <Section
-      className="rounded-b-[16px] bg-white px-6 py-3 text-center"
+      className="mobile:px-4 rounded-b-[16px] bg-white px-6 py-3 text-center"
       // inline, not `border-dashed`: react-email resolves Tailwind's
       // border-style variable once per email, which would dash every line
       style={{ borderTop: "1px dashed #dddddd" }}

@@ -79,8 +79,11 @@ export const EmailLayout = ({
         </Head>
         <Preview>{preview}</Preview>
         <Body className="m-0 font-sans">
-          <Section className="bg-white dark:bg-[#161616]">
-            <Container className="mobile:px-6 mobile:py-8 mx-auto w-full max-w-[580px] px-8 py-12">
+          {/* the padding sits here, not on <Container>: Container moves it onto
+              its inner <td> but leaves the class on the <table>, so mobile:
+              could never override it */}
+          <Section className="mobile:px-4 mobile:py-6 bg-white px-8 py-12 dark:bg-[#161616]">
+            <Container className="mx-auto w-full max-w-[516px]">
               {logoUrl
                 ? (
                   <Link href={url}>
@@ -100,7 +103,7 @@ export const EmailLayout = ({
 
               <Heading
                 as="h1"
-                className="mobile:mt-8 mobile:text-[26px] mobile:leading-[32px] m-0 mt-10 text-[32px] leading-[38px] font-bold tracking-[-0.01em] text-[#222222] dark:text-white"
+                className="mobile:mt-6 mobile:text-[26px] mobile:leading-[32px] m-0 mt-10 text-[32px] leading-[38px] font-bold tracking-[-0.01em] text-[#222222] dark:text-white"
               >
                 {title}
               </Heading>
@@ -120,9 +123,9 @@ export const EmailLayout = ({
                 &nbsp;
               </Section>
 
-              <Section className="mt-8">{children}</Section>
+              <Section className="mobile:mt-6 mt-8">{children}</Section>
 
-              <Section className={`${line} mt-12 border-t pt-8`}>
+              <Section className={`${line} mobile:mt-8 mobile:pt-6 mt-12 border-t pt-8`}>
                 {socials.length > 0
                   ? (
                     <Section className="mb-4">
