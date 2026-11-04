@@ -16,8 +16,8 @@ export interface Ticket {
     valid_from: string;
     valid_until: string;
   };
-  recipient_name: string;
-  recipient_email: string;
+  attendee_name: string;
+  attendee_email: string;
   /** What the QR code encodes; never shown as text. */
   code: string;
   /** The ticket number people see, like "2E8D4B07". */
@@ -30,13 +30,15 @@ export interface TicketDeliveryContent {
     venue?: string;
     /** ISO date-time. */
     startsAt?: string;
+    /** ISO date-time. */
+    endsAt?: string;
   };
   tickets: Ticket[];
 }
 
 /**
- * The days a ticket admits: "Sat 13 Jun, Sun 14 Jun" from its `days`; without
- * them, from its validity, "Sat 13 Jun" or "Sat 13 – Sun 14 Jun".
+ * The days a ticket admits: "13 Jun, 14 Jun" from its `days`; without them,
+ * from its validity, "13 Jun" or "13 – 14 Jun".
  */
 const validDays = ({ ticket }: Ticket) => {
   if (ticket.days?.length) {
@@ -45,7 +47,7 @@ const validDays = ({ ticket }: Ticket) => {
       .map((day) => DateTime.fromISO(day, { zone: "utc" }).setLocale("en-GB"))
       .filter((day) => day.isValid)
       // non-breaking spaces, so a narrow screen wraps between days, not inside one
-      .map((day) => day.toFormat("ccc d LLL").replaceAll(" ", "\u00a0"))
+      .map((day) => day.toFormat("d LLL").replaceAll(" ", "\u00a0"))
       .join(", ");
   }
 
@@ -53,8 +55,25 @@ const validDays = ({ ticket }: Ticket) => {
   const until = DateTime.fromISO(ticket.valid_until, { zone: "utc" }).setLocale("en-GB");
   if (!from.isValid) return undefined;
   return !until.isValid || from.hasSame(until, "day")
-    ? from.toFormat("ccc d LLL")
-    : `${from.toFormat("ccc d")} – ${until.toFormat("ccc d LLL")}`;
+    ? from.toFormat("d LLL")
+    : `${from.toFormat("d")} – ${until.toFormat("d LLL")}`;
+};
+
+/**
+ * When the edition runs: "13 Jun 2026", or with an end on a later day
+ * "13 – 14 Jun 2026", "30 May – 1 Jun 2026".
+ */
+const editionDates = ({ startsAt, endsAt }: NonNullable<TicketDeliveryContent["edition"]>) => {
+  const start = DateTime.fromISO(startsAt ?? "").setLocale("en-GB");
+  const end = DateTime.fromISO(endsAt ?? "").setLocale("en-GB");
+  if (!start.isValid) return undefined;
+  if (!end.isValid || end <= start || start.hasSame(end, "day")) {
+    return start.toFormat("d LLL yyyy");
+  }
+  const from = start.hasSame(end, "month")
+    ? "d"
+    : start.hasSame(end, "year") ? "d LLL" : "d LLL yyyy";
+  return `${start.toFormat(from)} – ${end.toFormat("d LLL yyyy")}`;
 };
 
 export const TicketDeliveryEmail = ({
@@ -62,9 +81,7 @@ export const TicketDeliveryEmail = ({
   recipient,
   content: { edition = {}, tickets },
 }: EmailModel<TicketDeliveryContent>) => {
-  const startsAt = edition.startsAt
-    ? DateTime.fromISO(edition.startsAt).setLocale("en-GB")
-    : undefined;
+  const dates = editionDates(edition);
 
   return (
     <EmailLayout
@@ -76,14 +93,14 @@ export const TicketDeliveryEmail = ({
       <Greeting name={recipient.name} />
       <Paragraph>Show the QR code at the entrance and you&apos;re in.</Paragraph>
 
-      {edition.name || startsAt?.isValid || edition.venue
+      {edition.name || dates || edition.venue
         ? (
           <Box className="mt-8 pb-5">
             <BoxTitle>{edition.name ?? "Your event"}</BoxTitle>
-            {startsAt?.isValid
+            {dates
               ? (
                 <Text className="m-0 text-[16px] leading-[24px] text-[#222222] dark:text-[#e5e5e5]">
-                  {startsAt.toFormat("ccc d LLL yyyy, HH:mm")}
+                  {dates}
                 </Text>
               )
               : null}
@@ -104,7 +121,7 @@ export const TicketDeliveryEmail = ({
           className="mt-4"
           position={index + 1}
           count={tickets.length}
-          attendeeName={ticket.recipient_name}
+          attendeeName={ticket.attendee_name}
           title={ticket.ticket.name ??
             getTicketTitle(ticket.ticket.valid_from, ticket.ticket.valid_until, "en-GB")}
           validity={validDays(ticket)}
@@ -137,11 +154,12 @@ TicketDeliveryEmail.PreviewProps = {
       name: "Kijult Weekend 2026",
       venue: "Lisbon Congress Centre",
       startsAt: "2026-06-13T10:00:00",
+      endsAt: "2026-06-14T20:00:00",
     },
     tickets: [
       {
-        recipient_email: "alex.johnson@example.com",
-        recipient_name: "Alex Johnson",
+        attendee_email: "alex.johnson@example.com",
+        attendee_name: "Alex Johnson",
         code: "c1d0e7a2-5f3b-4e8a-9b6c-2d4f8a1e7c30",
         displayId: "8A1E7C30",
         ticket: {
@@ -152,8 +170,8 @@ TicketDeliveryEmail.PreviewProps = {
         },
       },
       {
-        recipient_email: "sam.rivera@example.com",
-        recipient_name: "Sam Rivera",
+        attendee_email: "sam.rivera@example.com",
+        attendee_name: "Sam Rivera",
         code: "8b2e4f19-0a7c-4d3e-b5f1-6c9a2e8d4b07",
         displayId: "2E8D4B07",
         ticket: {
