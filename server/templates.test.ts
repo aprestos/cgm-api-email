@@ -58,8 +58,8 @@ describe("templates", () => {
 
   it("shows a ticket's name and days, or falls back to its validity", async () => {
     const ticket = (code: string, extra: object) => ({
-      recipient_name: "Alex",
-      recipient_email: "alex@example.com",
+      attendee_name: "Alex",
+      attendee_email: "alex@example.com",
       code,
       ticket: {
         valid_from: "2026-06-13T10:00:00Z",
@@ -79,8 +79,23 @@ describe("templates", () => {
       "alex@example.com",
     );
 
-    expect(email.text).toContain("Weekend pass · Sat\u00a013\u00a0Jun, Sun\u00a014\u00a0Jun");
-    expect(email.text).toContain("2 days · Sat 13 – Sun 14 Jun");
+    expect(email.text).toContain("Weekend pass · 13\u00a0Jun, 14\u00a0Jun");
+    expect(email.text).toContain("2 days · 13 – 14 Jun");
+  });
+
+  it("shows the edition's dates as an interval, or its start alone", async () => {
+    const dates = async (edition: object) =>
+      (await renderTemplate("ticket-delivery", { edition }, "alex@example.com")).text;
+
+    expect(await dates({ startsAt: "2026-06-13T10:00:00", endsAt: "2026-06-14T20:00:00" }))
+      .toContain("13 – 14 Jun 2026");
+    expect(await dates({ startsAt: "2026-05-30T10:00:00", endsAt: "2026-06-01T20:00:00" }))
+      .toContain("30 May – 1 Jun 2026");
+    expect(await dates({ startsAt: "2026-12-31T10:00:00", endsAt: "2027-01-01T20:00:00" }))
+      .toContain("31 Dec 2026 – 1 Jan 2027");
+    expect(await dates({ startsAt: "2026-06-13T10:00:00", endsAt: "2026-06-13T20:00:00" }))
+      .toContain("13 Jun 2026");
+    expect(await dates({ startsAt: "2026-06-13T10:00:00" })).toContain("13 Jun 2026");
   });
 
   it("shows the displayId, not the id, for orders, refunds and tickets", async () => {
@@ -99,8 +114,8 @@ describe("templates", () => {
       "ticket-delivery",
       {
         tickets: [{
-          recipient_name: "Alex",
-          recipient_email: "alex@example.com",
+          attendee_name: "Alex",
+          attendee_email: "alex@example.com",
           code: "secret-qr-payload",
           displayId: "TCK-001",
           ticket: { valid_from: "2026-06-13T10:00:00Z", valid_until: "2026-06-13T20:00:00Z" },

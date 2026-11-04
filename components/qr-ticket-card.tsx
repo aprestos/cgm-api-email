@@ -25,7 +25,7 @@ export const QrTicketCard = ({
   count: number;
   attendeeName: string;
   title: string;
-  /** The days it admits, like "Sat 13 Jun, Sun 14 Jun". */
+  /** The days it admits, like "13 Jun, 14 Jun". */
   validity?: string;
   /** What the QR code encodes. */
   ticketCode: string;
