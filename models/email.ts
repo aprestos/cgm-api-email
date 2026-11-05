@@ -23,8 +23,6 @@ export interface EmailBrand {
   /** Alt text of the logo, shown as text when there is no logo, and the copyright holder. */
   name: string;
   logoUrl?: string;
-  /** The logo's size in pixels, read from the image when the email renders (`server/logo-size.ts`). */
-  logoSize?: { width: number; height: number };
   /** Where the logo links to. */
   url?: string;
   /** Support address, shown in the footer. */
@@ -49,7 +47,6 @@ export const congremBrand: EmailBrand = {
   name: "congrem",
   logoUrl:
     "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/app/congrem-logo-green@2x.png",
-  logoSize: { width: 480, height: 126 },
   contact: "info@congrem.com",
   // the green of the logo, so congrem's emails carry one colour
   theme: { brandColor: "#1F7A5C" },

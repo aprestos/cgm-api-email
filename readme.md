@@ -57,9 +57,7 @@ padding on tables), so the emails don't lean on inline CSS for sizes:
   `email-ui.tsx`). React Email makes them full width with the `width="100%"`
   attribute only; an app that drops it, or the `width` in CSS too, shrinks
   each table to its content and centres it. `min-width` survives that.
-- The logo fits in 200×40 with both `width` and `height` set as attributes.
-  `server/logo-size.ts` reads the logo's size from the image when an email
-  renders (once per logo URL); if it can't, only the height is fixed.
+- The logo is 40px high and at most 200px wide.
 
 The social icons are PNGs in public Supabase storage (`images/app/mail`):
 Tabler icons, transparent, in `#737373` at 54px.

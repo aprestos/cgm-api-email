@@ -1,25 +1,9 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { congremBrand } from "../models/email";
 import { emailTypes, renderTemplate, templates } from "./templates";
 
-// the start of a PNG: the signature and an IHDR chunk with the size
-const pngHeader = (width: number, height: number) => {
-  const bytes = new Uint8Array(33);
-  bytes.set([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 13]);
-  bytes.set(new TextEncoder().encode("IHDR"), 12);
-  const view = new DataView(bytes.buffer);
-  view.setUint32(16, width);
-  view.setUint32(20, height);
-  return bytes;
-};
-
 describe("templates", () => {
-  afterEach(() => {
-    vi.unstubAllGlobals();
-    vi.restoreAllMocks();
-  });
-
   it("maps the body cgm-api-supabase sends to the model", () => {
     const model = templates["order-confirmation"].toModel(
       {
@@ -186,29 +170,13 @@ describe("templates", () => {
     await expect(renderTemplate("password-reset", {}, "alex@example.com")).rejects.toThrow("resetUrl");
   });
 
-  it("gives the logo the width and height that fit it in 200×40", async () => {
-    const fetch = vi.fn(async () => new Response(pngHeader(1080, 540)));
-    vi.stubGlobal("fetch", fetch);
+  it("gives the logo a height of 40 and a width of at most 200", async () => {
     const tenant = { name: "Kijult Weekend", logoUrl: "https://cdn.example.com/wide.png" };
-
-    const email = await renderTemplate("sign-in-code", { tenant, code: "305805" }, "alex@example.com");
-    await renderTemplate("sign-in-code", { tenant, code: "305805" }, "alex@example.com");
-
-    expect(email.html).toMatch(/<img alt="Kijult Weekend" height="40"[^>]*width="80"/);
-    expect(email.html).toContain("width:80px;height:40px");
-    // read once per logo
-    expect(fetch).toHaveBeenCalledTimes(1);
-  });
-
-  it("keeps the logo's height alone when it can't read the image", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => new Response("", { status: 404 })));
-    vi.spyOn(console, "warn").mockImplementation(() => {});
-    const tenant = { name: "Kijult Weekend", logoUrl: "https://cdn.example.com/missing.png" };
 
     const email = await renderTemplate("sign-in-code", { tenant, code: "305805" }, "alex@example.com");
 
     expect(email.html).toMatch(/<img alt="Kijult Weekend" height="40"/);
-    expect(email.html).toContain("width:auto;height:40px");
+    expect(email.html).toContain("height:40px;width:auto;max-width:200px");
   });
 
   it("puts padding and vertical margins on cells, and gives tables a CSS width", async () => {

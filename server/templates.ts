@@ -20,7 +20,6 @@ import {
   type EmailModel,
   type TenantData,
 } from "../models/email";
-import { withLogoSize } from "./logo-size";
 import { renderEmail } from "./render";
 
 /*
