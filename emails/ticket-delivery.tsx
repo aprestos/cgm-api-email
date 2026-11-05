@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { Text } from "react-email";
+import { Column, Row, Text } from "react-email";
 
 import { EmailLayout } from "../components/email-layout";
 import { Box, BoxTitle, Greeting, Paragraph } from "../components/email-ui";
@@ -95,22 +95,26 @@ export const TicketDeliveryEmail = ({
 
       {edition.name || dates || edition.venue
         ? (
-          <Box className="mt-8 pb-5">
+          <Box className="pt-8">
             <BoxTitle>{edition.name ?? "Your event"}</BoxTitle>
-            {dates
-              ? (
-                <Text className="m-0 text-[16px] leading-[24px] text-[#222222] dark:text-[#e5e5e5]">
-                  {dates}
-                </Text>
-              )
-              : null}
-            {edition.venue
-              ? (
-                <Text className="m-0 text-[16px] leading-[24px] text-[#6a6a6a] dark:text-[#b0b0b0]">
-                  {edition.venue}
-                </Text>
-              )
-              : null}
+            <Row>
+              <Column className="pb-5">
+                {dates
+                  ? (
+                    <Text className="m-0 text-[16px] leading-[24px] text-[#222222] dark:text-[#e5e5e5]">
+                      {dates}
+                    </Text>
+                  )
+                  : null}
+                {edition.venue
+                  ? (
+                    <Text className="m-0 text-[16px] leading-[24px] text-[#6a6a6a] dark:text-[#b0b0b0]">
+                      {edition.venue}
+                    </Text>
+                  )
+                  : null}
+              </Column>
+            </Row>
           </Box>
         )
         : null}
@@ -118,7 +122,7 @@ export const TicketDeliveryEmail = ({
       {tickets.map((ticket, index) => (
         <QrTicketCard
           key={ticket.code}
-          className="mt-4"
+          className="pt-4"
           position={index + 1}
           count={tickets.length}
           attendeeName={ticket.attendee_name}

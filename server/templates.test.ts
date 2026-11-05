@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { congremBrand } from "../models/email";
-import { renderTemplate, templates } from "./templates";
+import { emailTypes, renderTemplate, templates } from "./templates";
 
 // the start of a PNG: the signature and an IHDR chunk with the size
 const pngHeader = (width: number, height: number) => {
@@ -209,5 +209,27 @@ describe("templates", () => {
 
     expect(email.html).toMatch(/<img alt="Kijult Weekend" height="40"/);
     expect(email.html).toContain("width:auto;height:40px");
+  });
+
+  it("puts padding and vertical margins on cells, never on tables", async () => {
+    const ticket = {
+      attendee_name: "Alex",
+      attendee_email: "alex@example.com",
+      code: "TCK-1",
+      ticket: { valid_from: "2026-06-13T10:00:00Z", valid_until: "2026-06-13T20:00:00Z" },
+    };
+    const data = {
+      edition: { name: "Summer Fest" },
+      order: { items: [{ name: "Weekend pass", quantity: 1, price: "€30.00" }] },
+      refund: { refundAmount: "€30.00" },
+      tickets: [ticket],
+      code: "305805",
+      resetUrl: "https://example.com/reset",
+    };
+
+    for (const type of emailTypes) {
+      const { html } = await renderTemplate(type, data, "alex@example.com");
+      expect(html, type).not.toMatch(/<table[^>]*style="[^"]*(padding|margin-top|margin-bottom)/);
+    }
   });
 });

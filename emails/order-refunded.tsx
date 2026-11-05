@@ -1,4 +1,4 @@
-import { Section } from "react-email";
+import { Column, Row } from "react-email";
 
 import { EmailLayout } from "../components/email-layout";
 import {
@@ -50,7 +50,7 @@ export const OrderRefundedEmail = ({
         it can take 5–10 business days to show up in your account.
       </Paragraph>
 
-      <Box className="mt-8">
+      <Box className="pt-8">
         <BoxTitle detail={refund.refundDate}>Refund details</BoxTitle>
         <DetailsList
           details={[
@@ -66,12 +66,14 @@ export const OrderRefundedEmail = ({
 
       {refund.supportUrl
         ? (
-          <Section className="mt-8">
-            <Paragraph className="mb-5">
-              Something not right? Our support team is happy to help.
-            </Paragraph>
-            <EmailButton brand={brand} href={refund.supportUrl}>Contact support</EmailButton>
-          </Section>
+          <Row>
+            <Column className="pt-8">
+                <Paragraph className="mb-5">
+                  Something not right? Our support team is happy to help.
+                </Paragraph>
+                <EmailButton brand={brand} href={refund.supportUrl}>Contact support</EmailButton>
+            </Column>
+          </Row>
         )
         : null}
     </EmailLayout>

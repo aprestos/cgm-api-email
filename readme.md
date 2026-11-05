@@ -49,6 +49,10 @@ degradation; Outlook for Windows gets a plain fallback (square corners).
 Some apps lay their own CSS over an email (`img { height: auto }`, no
 padding on tables), so the emails don't lean on inline CSS for sizes:
 
+- Padding, and the space between boxed blocks, go on a cell, a `Column` in a
+  `Row`, never on a `Section`, `Row` or `Container`: Tailwind leaves them on
+  the `<table>`. So `Box` and `QrTicketCard` take `pt-8`, not `mt-8`; text
+  (`Paragraph`, `Text`) keeps its margins.
 - The logo fits in 200×40 with both `width` and `height` set as attributes.
   `server/logo-size.ts` reads the logo's size from the image when an email
   renders (once per logo URL); if it can't, only the height is fixed.

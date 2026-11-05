@@ -1,14 +1,16 @@
-import { Button, Column, Row, Section, Text } from "react-email";
+import { Button, Column, Row, Text } from "react-email";
 import type { ReactNode } from "react";
 
 import type { EmailBrand } from "../models/email";
 import { brandColors } from "./brand-colors";
 
 /*
- * Building blocks for the content of an `EmailLayout`. None of them sets an
- * outer margin; the email spaces them with `className`. Two classes for the
- * same property (say `mb-0` and `mb-4`) do not override each other in a
- * predictable order, so a block never sets what its caller would.
+ * Building blocks for the content of an `EmailLayout`. None of them sets its
+ * own outer space; the email spaces them with `className`: margins for the
+ * text blocks (`Paragraph className="mt-6"`), padding for the boxed ones
+ * (`Box className="pt-8"`), which goes on a cell around the box. Two classes
+ * for the same property (say `mb-0` and `mb-4`) do not override each other in
+ * a predictable order, so a block never sets what its caller would.
  */
 
 export const cx = (...classes: (string | false | undefined)[]) =>
@@ -53,6 +55,11 @@ export const Strong = ({ children }: { children: ReactNode }) => (
   </strong>
 );
 
+/*
+ * Padding and margins go on a cell, a `Column`, never on a `Section` or `Row`:
+ * Tailwind leaves them on the <table>, where Outlook and many apps ignore them.
+ */
+
 /** A rounded, outlined box that groups related content. */
 export const Box = ({
   children,
@@ -61,9 +68,13 @@ export const Box = ({
   children: ReactNode;
   className?: string;
 }) => (
-  <Section className={cx(line, "mobile:px-4 rounded-[16px] border px-6", className)}>
-    {children}
-  </Section>
+  <Row>
+    <Column className={className}>
+      <Row className={`${line} rounded-[16px] border`}>
+        <Column className="mobile:px-4 px-6">{children}</Column>
+      </Row>
+    </Column>
+  </Row>
 );
 
 /** The heading of a `Box`, with an optional grey line under it. */
@@ -74,23 +85,25 @@ export const BoxTitle = ({
   children: ReactNode;
   detail?: ReactNode;
 }) => (
-  <Section className="pt-5 pb-3">
-    <Text className="m-0 text-[20px] leading-[26px] font-bold text-[#222222] dark:text-white">
-      {children}
-    </Text>
-    {detail
-      ? (
-        <Text className="m-0 mt-1 text-[14px] leading-[20px] text-[#6a6a6a] dark:text-[#b0b0b0]">
-          {detail}
-        </Text>
-      )
-      : null}
-  </Section>
+  <Row>
+    <Column className="pt-5 pb-3">
+      <Text className="m-0 text-[20px] leading-[26px] font-bold text-[#222222] dark:text-white">
+        {children}
+      </Text>
+      {detail
+        ? (
+          <Text className="m-0 mt-1 text-[14px] leading-[20px] text-[#6a6a6a] dark:text-[#b0b0b0]">
+            {detail}
+          </Text>
+        )
+        : null}
+    </Column>
+  </Row>
 );
 
 /** A row in a `Box`, under a hairline. */
 export const BoxRow = ({ children }: { children: ReactNode }) => (
-  <Row className={cx(line, "border-t")}>{children}</Row>
+  <Row className={`${line} border-t`}>{children}</Row>
 );
 
 export interface Detail {
