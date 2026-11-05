@@ -63,15 +63,7 @@ export const EmailLayout = ({
   footerText?: string;
   children: ReactNode;
 }) => {
-  const { name: brandName, logoUrl, logoSize, url, socialNetworks } = brand;
-  // The logo fits in 200×40. With its size known it gets both as attributes
-  // too, so it keeps them where a client's own CSS sets `height: auto` on
-  // images; otherwise only the height is fixed.
-  const logoScale = logoSize
-    ? Math.min(200 / logoSize.width, 40 / logoSize.height)
-    : 0;
-  const logoWidth = logoSize ? Math.round(logoSize.width * logoScale) : undefined;
-  const logoHeight = logoSize ? Math.round(logoSize.height * logoScale) : 40;
+  const { name: brandName, logoUrl, url, socialNetworks } = brand;
   const socials = socialLinks.filter(({ network }) => socialNetworks?.[network]);
 
   return (
@@ -101,14 +93,8 @@ export const EmailLayout = ({
                       <Img
                         src={logoUrl}
                         alt={brandName}
-                        width={logoWidth}
-                        height={logoHeight}
-                        className="block"
-                        style={{
-                          width: logoWidth ?? "auto",
-                          height: logoHeight,
-                          maxWidth: 200,
-                        }}
+                        height={40}
+                        className="block h-[40px] w-auto max-w-[200px]"
                       />
                     </Link>
                   )

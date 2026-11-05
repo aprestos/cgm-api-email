@@ -1,4 +1,3 @@
-import { imageSize } from "image-size";
 
 import type { EmailBrand } from "../models/email";
 
@@ -11,22 +10,10 @@ const sizes = new Map<string, { width: number; height: number }>();
  * fetched or read) the brand comes back as it was, and the layout sizes the
  * logo by its height alone.
  */
-export async function withLogoSize(brand: EmailBrand): Promise<EmailBrand> {
+export async function withLogoSize(brand: EmailBrand, height: number): Promise<EmailBrand> {
   const { logoUrl } = brand;
-  if (!logoUrl || brand.logoSize) return brand;
-
-  let size = sizes.get(logoUrl);
-  if (!size) {
-    try {
-      const res = await fetch(logoUrl, { signal: AbortSignal.timeout(3000) });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const { width, height } = imageSize(new Uint8Array(await res.arrayBuffer()));
-      size = { width, height };
-      sizes.set(logoUrl, size);
-    } catch (err) {
-      console.warn(`[logo] could not read the size of ${logoUrl}:`, err);
-      return brand;
-    }
-  }
-  return { ...brand, logoSize: size };
+  if (!logoUrl || height) return brand;
+//TODO apply resize
+  return brand;
 }
+

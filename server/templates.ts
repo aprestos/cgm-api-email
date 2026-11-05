@@ -127,6 +127,5 @@ export async function renderTemplate(type: EmailType, data: EmailData, to: strin
   // each entry is checked on its own above; here only the shared shape matters
   const { Component, toModel, subject } = templates[type] as unknown as TemplateEntry<unknown>;
   const model = toModel(data, to);
-  model.brand = await withLogoSize(model.brand);
   return { subject: subject(model), ...(await renderEmail(Component, model)) };
 }
