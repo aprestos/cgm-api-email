@@ -64,6 +64,25 @@ padding on tables), so the emails don't lean on inline CSS for sizes:
 The social icons are PNGs in public Supabase storage (`images/app/mail`):
 Tabler icons, transparent, in `#737373` at 54px.
 
+## Checking email clients
+
+- **Compatibility tab** in `npm run dev`: the CSS each template uses, checked
+  against caniemail.com, client by client.
+- **`npm run check:clients`** screenshots every email from its preview props
+  in WebKit (Apple Mail, iOS and most Mac and iPhone apps) and Chromium (the
+  Gmail app on Android, webmail). It covers phone and desktop, light and dark,
+  and two hostile cases:
+  - `app-css`: an app that drops table widths and spacing and sets
+    `height: auto` on images
+  - `no-style`: a client that drops `<style>`
+
+  Look through `.client-check/index.html`. The script fails only when a page
+  is wider than the screen. To check some emails only:
+  `npm run check:clients -- ticket-delivery`. The first time, install the
+  browsers with `npx playwright install chromium webkit`.
+- **Real clients**: send yourself the email, or use Litmus or Email on Acid
+  before a big send.
+
 ## Emails
 
 Every template renders from one model, `EmailModel` in `models/email.ts`:
