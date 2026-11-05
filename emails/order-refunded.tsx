@@ -83,6 +83,8 @@ OrderRefundedEmail.PreviewProps = {
     name: "Kijult Weekend",
     logoUrl:
       "https://nzktjtcukwbznnmdzlve.supabase.co/storage/v1/object/public/images/tenants/be6adb88-d5c3-4786-89b2-e801c4f48d88/logos/ad3aa1de-e450-404d-a2ef-ea8feea308d6.png",
+    // as the server reads it from the image when it renders
+    logoSize: { width: 1080, height: 540 },
     url: "https://congrem.com",
     contact: "info@congrem.com",
     socialNetworks: {

@@ -46,6 +46,13 @@ Common building blocks live in `components`:
 Gmail, Apple Mail and Outlook.com must render the emails without visible
 degradation; Outlook for Windows gets a plain fallback (square corners).
 
+Some apps lay their own CSS over an email (`img { height: auto }`, no
+padding on tables), so the emails don't lean on inline CSS for sizes:
+
+- The logo fits in 200×40 with both `width` and `height` set as attributes.
+  `server/logo-size.ts` reads the logo's size from the image when an email
+  renders (once per logo URL); if it can't, only the height is fixed.
+
 The social icons are PNGs in public Supabase storage (`images/app/mail`):
 Tabler icons, transparent, in `#737373` at 54px.
 
