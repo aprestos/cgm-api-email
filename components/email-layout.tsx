@@ -17,7 +17,7 @@ import type { ReactNode } from "react";
 
 import { congremBrand, type EmailBrand } from "../models/email";
 import { brandColors, brandCss, darkPage } from "./brand-colors";
-import { line } from "./email-ui";
+import { fullWidth, line } from "./email-ui";
 import { emailTailwindConfig } from "./email-theme";
 
 /*
@@ -90,9 +90,9 @@ export const EmailLayout = ({
         <Preview>{preview}</Preview>
         <Body className="m-0 font-sans">
           {/* Padding and the space between blocks go on a cell (a <Column>),
-              never on a <Section>, <Row> or <Container>: Tailwind leaves them
+              never on a <Section>, <Row className={fullWidth}> or <Container>: Tailwind leaves them
               on the <table>, where Outlook and many apps ignore them. */}
-          <Row>
+          <Row className={fullWidth}>
             <Column className="mobile:px-4 mobile:py-6 bg-white px-8 py-12 dark:bg-[#161616]">
               <Container className="mx-auto w-full max-w-[516px]">
                 {logoUrl
@@ -125,10 +125,11 @@ export const EmailLayout = ({
                   {title}
                 </Heading>
                 {/* the brand's mark: a short bar under the title */}
-                <Row>
+                <Row className={fullWidth}>
                   <Column className="pt-4">
                     <Section
                       align="left"
+                      width={48}
                       className="brand-fill"
                       style={{
                         width: 48,
@@ -144,15 +145,15 @@ export const EmailLayout = ({
                   </Column>
                 </Row>
 
-                <Row>
+                <Row className={fullWidth}>
                   <Column className="mobile:pt-6 mobile:pb-8 pt-8 pb-12">{children}</Column>
                 </Row>
 
-                <Row>
+                <Row className={fullWidth}>
                   <Column className={`${line} mobile:pt-6 border-t pt-8`}>
                     {socials.length > 0
                       ? (
-                        <Row>
+                        <Row className={fullWidth}>
                           <Column className="pb-4">
                             {socials.map(({ network, label }) => (
                               <Link

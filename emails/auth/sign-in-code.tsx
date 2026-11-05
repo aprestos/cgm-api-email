@@ -1,7 +1,7 @@
 import { Column, Row, Text } from "react-email";
 
 import { EmailLayout } from "../../components/email-layout";
-import { Greeting, Paragraph } from "../../components/email-ui";
+import { fullWidth, Greeting, Paragraph } from "../../components/email-ui";
 import { congremBrand, type EmailModel } from "../../models/email";
 
 export interface SignInCodeContent {
@@ -21,9 +21,9 @@ export const SignInCodeEmail = ({
   >
     <Greeting name={recipient.name} />
     <Paragraph>Use this code to sign in to {brand.name}.</Paragraph>
-    <Row>
+    <Row className={fullWidth}>
       <Column className="pt-6">
-        <Row>
+        <Row className={fullWidth}>
           <Column
             align="center"
             className="rounded-[16px] bg-[#f7f7f7] py-6 text-center dark:bg-[#262626]"

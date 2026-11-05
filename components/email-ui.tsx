@@ -20,6 +20,14 @@ export const cx = (...classes: (string | false | undefined)[]) =>
 export const line =
   "border-0 border-solid border-[#dddddd] dark:border-[#3a3a3a]";
 
+/**
+ * For every `Row` and `Section`. React Email makes them full width with the
+ * `width="100%"` attribute only; some apps drop it, or the `width` in CSS
+ * too, and the table shrinks to its content and sits centred. `min-width`
+ * survives them. (Not for `Container`: it would override its max-width.)
+ */
+export const fullWidth = "w-full min-w-full";
+
 export const Paragraph = ({
   children,
   muted,
@@ -68,9 +76,9 @@ export const Box = ({
   children: ReactNode;
   className?: string;
 }) => (
-  <Row>
+  <Row className={fullWidth}>
     <Column className={className}>
-      <Row className={`${line} rounded-[16px] border`}>
+      <Row className={`${line} ${fullWidth} rounded-[16px] border`}>
         <Column className="mobile:px-4 px-6">{children}</Column>
       </Row>
     </Column>
@@ -85,7 +93,7 @@ export const BoxTitle = ({
   children: ReactNode;
   detail?: ReactNode;
 }) => (
-  <Row>
+  <Row className={fullWidth}>
     <Column className="pt-5 pb-3">
       <Text className="m-0 text-[20px] leading-[26px] font-bold text-[#222222] dark:text-white">
         {children}
@@ -103,7 +111,7 @@ export const BoxTitle = ({
 
 /** A row in a `Box`, under a hairline. */
 export const BoxRow = ({ children }: { children: ReactNode }) => (
-  <Row className={`${line} border-t`}>{children}</Row>
+  <Row className={`${line} ${fullWidth} border-t`}>{children}</Row>
 );
 
 export interface Detail {

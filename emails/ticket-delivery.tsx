@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import { Column, Row, Text } from "react-email";
 
 import { EmailLayout } from "../components/email-layout";
-import { Box, BoxTitle, Greeting, Paragraph } from "../components/email-ui";
+import { Box, BoxTitle, fullWidth, Greeting, Paragraph } from "../components/email-ui";
 import { QrTicketCard } from "../components/qr-ticket-card";
 import { getTicketTitle } from "../components/ticket.helper";
 import type { EmailModel } from "../models/email";
@@ -97,7 +97,7 @@ export const TicketDeliveryEmail = ({
         ? (
           <Box className="pt-8">
             <BoxTitle>{edition.name ?? "Your event"}</BoxTitle>
-            <Row>
+            <Row className={fullWidth}>
               <Column className="pb-5">
                 {dates
                   ? (

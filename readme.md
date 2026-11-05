@@ -53,6 +53,10 @@ padding on tables), so the emails don't lean on inline CSS for sizes:
   `Row`, never on a `Section`, `Row` or `Container`: Tailwind leaves them on
   the `<table>`. So `Box` and `QrTicketCard` take `pt-8`, not `mt-8`; text
   (`Paragraph`, `Text`) keeps its margins.
+- Every `Row` and `Section` takes `fullWidth` (`w-full min-w-full`, from
+  `email-ui.tsx`). React Email makes them full width with the `width="100%"`
+  attribute only; an app that drops it, or the `width` in CSS too, shrinks
+  each table to its content and centres it. `min-width` survives that.
 - The logo fits in 200×40 with both `width` and `height` set as attributes.
   `server/logo-size.ts` reads the logo's size from the image when an email
   renders (once per logo URL); if it can't, only the height is fixed.

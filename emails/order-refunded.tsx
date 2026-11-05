@@ -7,6 +7,7 @@ import {
   BrandFigure,
   DetailsList,
   EmailButton,
+  fullWidth,
   Greeting,
   Paragraph,
   Strong,
@@ -66,7 +67,7 @@ export const OrderRefundedEmail = ({
 
       {refund.supportUrl
         ? (
-          <Row>
+          <Row className={fullWidth}>
             <Column className="pt-8">
                 <Paragraph className="mb-5">
                   Something not right? Our support team is happy to help.

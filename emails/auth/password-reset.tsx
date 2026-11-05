@@ -2,7 +2,7 @@ import { Column, Link, Row, Text } from "react-email";
 
 import { brandColors } from "../../components/brand-colors";
 import { EmailLayout } from "../../components/email-layout";
-import { EmailButton, Greeting, line, Paragraph } from "../../components/email-ui";
+import { EmailButton, fullWidth, Greeting, line, Paragraph } from "../../components/email-ui";
 import { congremBrand, type EmailModel } from "../../models/email";
 
 export interface PasswordResetContent {
@@ -27,7 +27,7 @@ export const PasswordResetEmail = ({
       with the button below.
     </Paragraph>
 
-    <Row>
+    <Row className={fullWidth}>
       <Column className="pt-6">
         <EmailButton brand={brand} href={resetUrl}>Choose a new password</EmailButton>
       </Column>
@@ -38,9 +38,9 @@ export const PasswordResetEmail = ({
       this email and your password stays the same.
     </Paragraph>
 
-    <Row>
+    <Row className={fullWidth}>
       <Column className="pt-8">
-        <Row>
+        <Row className={fullWidth}>
           <Column className={`${line} border-t pt-6`}>
             <Text className="mt-0 mb-1 text-[14px] leading-[20px] text-[#6a6a6a] dark:text-[#b0b0b0]">
               Button not working? Paste this link into your browser:

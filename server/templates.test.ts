@@ -211,7 +211,7 @@ describe("templates", () => {
     expect(email.html).toContain("width:auto;height:40px");
   });
 
-  it("puts padding and vertical margins on cells, never on tables", async () => {
+  it("puts padding and vertical margins on cells, and gives tables a CSS width", async () => {
     const ticket = {
       attendee_name: "Alex",
       attendee_email: "alex@example.com",
@@ -230,6 +230,14 @@ describe("templates", () => {
     for (const type of emailTypes) {
       const { html } = await renderTemplate(type, data, "alex@example.com");
       expect(html, type).not.toMatch(/<table[^>]*style="[^"]*(padding|margin-top|margin-bottom)/);
+      // Full width in CSS too (`fullWidth`): an app that drops the attribute
+      // shrinks and centres the table. The first is <Body>'s, which takes no
+      // style; the tables inside it stretch it. The <Container> keeps its
+      // max-width instead of a min-width.
+      for (const [table] of [...html.matchAll(/<table[^>]*width="100%"[^>]*>/g)].slice(1)) {
+        expect(table, type).toMatch(/style="[^"]*width:100%/);
+        if (!table.includes("max-width")) expect(table, type).toMatch(/style="[^"]*min-width:100%/);
+      }
     }
   });
 });

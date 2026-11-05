@@ -1,6 +1,6 @@
 import { Column, Img, Row, Section, Text } from "react-email";
 
-import { line } from "./email-ui";
+import { fullWidth, line } from "./email-ui";
 
 // the code itself about 190px: the rest is the quiet zone in the image
 const qrcodeSize: number = 256;
@@ -33,12 +33,12 @@ export const QrTicketCard = ({
   displayId: string;
   className?: string;
 }) => (
-  <Row>
+  <Row className={fullWidth}>
     <Column className={className}>
-      <Section className={`${line} rounded-[16px] border`}>
-        <Row>
+      <Section className={`${line} ${fullWidth} rounded-[16px] border`}>
+        <Row className={fullWidth}>
           <Column className="mobile:px-4 px-6 pt-5 pb-4">
-            <Row>
+            <Row className={fullWidth}>
               <Column className="align-top text-[20px] leading-[26px] font-bold text-[#222222] dark:text-white">
                 {attendeeName}
               </Column>
@@ -54,7 +54,7 @@ export const QrTicketCard = ({
             </Text>
           </Column>
         </Row>
-        <Row>
+        <Row className={fullWidth}>
           <Column
             align="center"
             className="mobile:px-4 rounded-b-[16px] bg-white px-6 py-3 text-center"
