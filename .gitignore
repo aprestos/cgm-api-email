@@ -151,3 +151,6 @@ vite.config.ts.timestamp-*
 .claude/agent-memory-local/
 .claude/scheduled_tasks.lock
 .claude/**/*.bak
+
+# npm run check:clients
+.client-check/
