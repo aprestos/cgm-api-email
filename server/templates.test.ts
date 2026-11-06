@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { congremBrand } from "../models/email";
-import { renderTemplate, templates } from "./templates";
+import { emailTypes, renderTemplate, templates } from "./templates";
 
 describe("templates", () => {
   it("maps the body cgm-api-supabase sends to the model", () => {
@@ -168,5 +168,44 @@ describe("templates", () => {
   it("refuses an auth email without its code or link", async () => {
     await expect(renderTemplate("sign-in-code", {}, "alex@example.com")).rejects.toThrow("code");
     await expect(renderTemplate("password-reset", {}, "alex@example.com")).rejects.toThrow("resetUrl");
+  });
+
+  it("gives the logo a height of 40 and a width of at most 200", async () => {
+    const tenant = { name: "Kijult Weekend", logoUrl: "https://cdn.example.com/wide.png" };
+
+    const email = await renderTemplate("sign-in-code", { tenant, code: "305805" }, "alex@example.com");
+
+    expect(email.html).toMatch(/<img alt="Kijult Weekend" height="40"/);
+    expect(email.html).toContain("height:40px;width:auto;max-width:200px");
+  });
+
+  it("puts padding and vertical margins on cells, and gives tables a CSS width", async () => {
+    const ticket = {
+      attendee_name: "Alex",
+      attendee_email: "alex@example.com",
+      code: "TCK-1",
+      ticket: { valid_from: "2026-06-13T10:00:00Z", valid_until: "2026-06-13T20:00:00Z" },
+    };
+    const data = {
+      edition: { name: "Summer Fest" },
+      order: { items: [{ name: "Weekend pass", quantity: 1, price: "€30.00" }] },
+      refund: { refundAmount: "€30.00" },
+      tickets: [ticket],
+      code: "305805",
+      resetUrl: "https://example.com/reset",
+    };
+
+    for (const type of emailTypes) {
+      const { html } = await renderTemplate(type, data, "alex@example.com");
+      expect(html, type).not.toMatch(/<table[^>]*style="[^"]*(padding|margin-top|margin-bottom)/);
+      // Full width in CSS too (`fullWidth`): an app that drops the attribute
+      // shrinks and centres the table. The first is <Body>'s, which takes no
+      // style; the tables inside it stretch it. The <Container> keeps its
+      // max-width instead of a min-width.
+      for (const [table] of [...html.matchAll(/<table[^>]*width="100%"[^>]*>/g)].slice(1)) {
+        expect(table, type).toMatch(/style="[^"]*width:100%/);
+        if (!table.includes("max-width")) expect(table, type).toMatch(/style="[^"]*min-width:100%/);
+      }
+    }
   });
 });

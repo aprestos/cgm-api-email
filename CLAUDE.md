@@ -8,6 +8,7 @@ Renders Congrem's transactional emails with React Email and sends them through R
 - `npm run start:dev`: the API on :3001 (`POST /emails`, `GET /health`). Env vars are in `.env.example`.
 - `npm test`: Vitest (`server/templates.test.ts`, `components/*.test.ts`).
 - `npm run typecheck`: `tsc --noEmit`. Run it before calling a change done.
+- `npm run check:clients`: screenshots every email in WebKit and Chromium, as sent and as hostile apps change it, into `.client-check/index.html`. Run it after a layout change and look through the sheet.
 
 ## Shape
 
