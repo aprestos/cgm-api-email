@@ -59,7 +59,7 @@ export const OrderConfirmationEmail = ({
         will arrive in a separate email within a few minutes.
       </Paragraph>
 
-      <Box className="mt-8">
+      <Box className="pt-8">
         <BoxTitle detail={[edition?.name, order.orderDate].filter(Boolean).join(" · ")}>
           Order summary
         </BoxTitle>

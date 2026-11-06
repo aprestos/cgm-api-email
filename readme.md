@@ -46,8 +46,40 @@ Common building blocks live in `components`:
 Gmail, Apple Mail and Outlook.com must render the emails without visible
 degradation; Outlook for Windows gets a plain fallback (square corners).
 
+Some apps lay their own CSS over an email (`img { height: auto }`, no
+padding on tables), so the emails don't lean on inline CSS for sizes:
+
+- Padding, and the space between boxed blocks, go on a cell, a `Column` in a
+  `Row`, never on a `Section`, `Row` or `Container`: Tailwind leaves them on
+  the `<table>`. So `Box` and `QrTicketCard` take `pt-8`, not `mt-8`; text
+  (`Paragraph`, `Text`) keeps its margins.
+- Every `Row` and `Section` takes `fullWidth` (`w-full min-w-full`, from
+  `email-ui.tsx`). React Email makes them full width with the `width="100%"`
+  attribute only; an app that drops it, or the `width` in CSS too, shrinks
+  each table to its content and centres it. `min-width` survives that.
+- The logo is 40px high and at most 200px wide.
+
 The social icons are PNGs in public Supabase storage (`images/app/mail`):
 Tabler icons, transparent, in `#737373` at 54px.
+
+## Checking email clients
+
+- **Compatibility tab** in `npm run dev`: the CSS each template uses, checked
+  against caniemail.com, client by client.
+- **`npm run check:clients`** screenshots every email from its preview props
+  in WebKit (Apple Mail, iOS and most Mac and iPhone apps) and Chromium (the
+  Gmail app on Android, webmail). It covers phone and desktop, light and dark,
+  and two hostile cases:
+  - `app-css`: an app that drops table widths and spacing and sets
+    `height: auto` on images
+  - `no-style`: a client that drops `<style>`
+
+  Look through `.client-check/index.html`. The script fails only when a page
+  is wider than the screen. To check some emails only:
+  `npm run check:clients -- ticket-delivery`. The first time, install the
+  browsers with `npx playwright install chromium webkit`.
+- **Real clients**: send yourself the email, or use Litmus or Email on Acid
+  before a big send.
 
 ## Emails
 

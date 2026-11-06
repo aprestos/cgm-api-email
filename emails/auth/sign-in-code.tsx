@@ -1,7 +1,7 @@
-import { Section, Text } from "react-email";
+import { Column, Row, Text } from "react-email";
 
 import { EmailLayout } from "../../components/email-layout";
-import { Greeting, Paragraph } from "../../components/email-ui";
+import { fullWidth, Greeting, Paragraph } from "../../components/email-ui";
 import { congremBrand, type EmailModel } from "../../models/email";
 
 export interface SignInCodeContent {
@@ -21,15 +21,24 @@ export const SignInCodeEmail = ({
   >
     <Greeting name={recipient.name} />
     <Paragraph>Use this code to sign in to {brand.name}.</Paragraph>
-    <Section className="mt-6 rounded-[16px] bg-[#f7f7f7] py-6 text-center dark:bg-[#262626]">
-      <Text
-        className="mobile:text-[32px] mobile:leading-[40px] m-0 text-[40px] leading-[48px] font-bold text-[#222222] dark:text-white"
-        // letter-spacing also trails the last digit; indent by as much to re-centre
-        style={{ letterSpacing: "0.25em", textIndent: "0.25em" }}
-      >
-        {code}
-      </Text>
-    </Section>
+    <Row className={fullWidth}>
+      <Column className="pt-6">
+        <Row className={fullWidth}>
+          <Column
+            align="center"
+            className="rounded-[16px] bg-[#f7f7f7] py-6 text-center dark:bg-[#262626]"
+          >
+            <Text
+              className="mobile:text-[32px] mobile:leading-[40px] m-0 text-[40px] leading-[48px] font-bold text-[#222222] dark:text-white"
+              // letter-spacing also trails the last digit; indent by as much to re-centre
+              style={{ letterSpacing: "0.25em", textIndent: "0.25em" }}
+            >
+              {code}
+            </Text>
+          </Column>
+        </Row>
+      </Column>
+    </Row>
     <Paragraph muted className="mt-6">
       Never share this code with anyone. If you didn&apos;t try to sign in, you
       can ignore this email.
