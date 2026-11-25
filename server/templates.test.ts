@@ -129,6 +129,35 @@ describe("templates", () => {
     }
   });
 
+  it("falls back to \"Ticket\" when a ticket has no name, no attendee and no usable dates", async () => {
+    const email = await renderTemplate(
+      "ticket-delivery",
+      {
+        tickets: [{
+          attendee_name: null,
+          attendee_email: "alex@example.com",
+          code: "TCK-1",
+          displayId: "8A1E7C30",
+          ticket: { valid_from: "", valid_until: "" },
+        }],
+      },
+      "alex@example.com",
+    );
+
+    expect(email.text).toContain("Ticket");
+    expect(email.text).not.toMatch(/(^|\s)-(\s|$)/);
+  });
+
+  it("greets without a name when the name is only whitespace", async () => {
+    const email = await renderTemplate(
+      "sign-in-code",
+      { customer: { name: "   " }, code: "305805" },
+      "alex@example.com",
+    );
+
+    expect(email.text).toMatch(/^Hi,$/m);
+  });
+
   it("shows the edition's dates as an interval, or its start alone", async () => {
     const dates = async (edition: object) =>
       (await renderTemplate("ticket-delivery", { edition }, "alex@example.com")).text;

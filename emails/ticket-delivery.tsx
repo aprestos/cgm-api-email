@@ -60,6 +60,12 @@ const validDays = ({ ticket }: Ticket) => {
     : `${from.toFormat("d")} – ${until.toFormat("d LLL")}`;
 };
 
+/** A ticket type without a name: its length, or "Ticket" where `getTicketTitle` has no dates and says "-". */
+const ticketTitle = ({ ticket }: Ticket) => {
+  const title = getTicketTitle(ticket.valid_from, ticket.valid_until, "en-GB");
+  return title === "-" ? "Ticket" : title;
+};
+
 /**
  * When the edition runs: "13 Jun 2026", or with an end on a later day
  * "13 – 14 Jun 2026", "30 May – 1 Jun 2026".
@@ -127,8 +133,7 @@ export const TicketDeliveryEmail = ({
           position={index + 1}
           count={tickets.length}
           attendeeName={ticket.attendee_name}
-          title={ticket.ticket.name ??
-            getTicketTitle(ticket.ticket.valid_from, ticket.ticket.valid_until, "en-GB")}
+          title={ticket.ticket.name ?? ticketTitle(ticket)}
           validity={validDays(ticket)}
           ticketCode={ticket.code}
           // until every sender has `displayId`, the code itself

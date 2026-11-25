@@ -52,9 +52,10 @@ export const Paragraph = ({
 );
 
 /** How every email opens: "Hi Alex," or, without a name, "Hi,". */
-export const Greeting = ({ name }: { name?: string }) => (
-  <Paragraph className="mb-4">Hi{name ? ` ${name}` : ""},</Paragraph>
-);
+export const Greeting = ({ name }: { name?: string }) => {
+  const trimmed = name?.trim();
+  return <Paragraph className="mb-4">Hi{trimmed ? ` ${trimmed}` : ""},</Paragraph>;
+};
 
 /** Emphasis inside a `Paragraph`. */
 export const Strong = ({ children }: { children: ReactNode }) => (
