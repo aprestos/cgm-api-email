@@ -16,7 +16,8 @@ export interface Ticket {
     valid_from: string;
     valid_until: string;
   };
-  attendee_name: string;
+  /** Null when the buyer gave no name; the card then leads with the ticket's title. */
+  attendee_name?: string | null;
   attendee_email: string;
   /** What the QR code encodes; never shown as text. */
   code: string;
@@ -57,6 +58,12 @@ const validDays = ({ ticket }: Ticket) => {
   return !until.isValid || from.hasSame(until, "day")
     ? from.toFormat("d LLL")
     : `${from.toFormat("d")} – ${until.toFormat("d LLL")}`;
+};
+
+/** A ticket type without a name: its length, or "Ticket" where `getTicketTitle` has no dates and says "-". */
+const ticketTitle = ({ ticket }: Ticket) => {
+  const title = getTicketTitle(ticket.valid_from, ticket.valid_until, "en-GB");
+  return title === "-" ? "Ticket" : title;
 };
 
 /**
@@ -126,8 +133,7 @@ export const TicketDeliveryEmail = ({
           position={index + 1}
           count={tickets.length}
           attendeeName={ticket.attendee_name}
-          title={ticket.ticket.name ??
-            getTicketTitle(ticket.ticket.valid_from, ticket.ticket.valid_until, "en-GB")}
+          title={ticket.ticket.name ?? ticketTitle(ticket)}
           validity={validDays(ticket)}
           ticketCode={ticket.code}
           // until every sender has `displayId`, the code itself
@@ -183,6 +189,19 @@ TicketDeliveryEmail.PreviewProps = {
           days: ["2026-06-13"],
           valid_from: "2026-06-13T10:00:00Z",
           valid_until: "2026-06-13T20:00:00Z",
+        },
+      },
+      {
+        // bought without a name: the card leads with the ticket's title
+        attendee_email: "alex.johnson@example.com",
+        attendee_name: null,
+        code: "5d7f0c3a-91e2-4b68-a4d6-0e1b8c3f2a95",
+        displayId: "0E1B8C3F",
+        ticket: {
+          name: "Weekend pass",
+          days: ["2026-06-13", "2026-06-14"],
+          valid_from: "2026-06-13T10:00:00Z",
+          valid_until: "2026-06-14T20:00:00Z",
         },
       },
     ],
