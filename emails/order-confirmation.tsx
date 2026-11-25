@@ -31,8 +31,6 @@ export interface OrderConfirmationContent {
     orderDate?: string;
     orderLink?: string;
     subtotal?: string;
-    /** What was taken off the items, as a positive amount; left out when there is none. */
-    discount?: string;
     shipping?: string;
     tax?: string;
     totalAmount?: string;
@@ -87,21 +85,6 @@ export const OrderConfirmationEmail = ({
             </Column>
           </BoxRow>
         ))}
-        {order.discount
-          ? (
-            <BoxRow>
-              <Column className="py-4 text-[16px] leading-[22px] text-[#6a6a6a] dark:text-[#b0b0b0]">
-                Discount
-              </Column>
-              <Column
-                align="right"
-                className="py-4 pl-4 text-right text-[16px] leading-[22px] text-[#222222] dark:text-white"
-              >
-                {`−${order.discount}`}
-              </Column>
-            </BoxRow>
-          )
-          : null}
         <BoxRow>
           <Column className="py-5 text-[16px] leading-[22px] font-bold text-[#222222] dark:text-white">
             Total
@@ -140,8 +123,7 @@ OrderConfirmationEmail.PreviewProps = {
       orderId: "ord_0196a3c2-7b1e-7c40-9d2f-3a8e5b6c1d02",
       displayId: "5B6C1D02",
       orderDate: "2 May 2026 at 14:32",
-      discount: "€10.00",
-      totalAmount: "€68.00",
+      totalAmount: "€78.00",
       items: [
         { name: "Weekend pass", category: "Saturday and Sunday", quantity: 2, price: "€60.00" },
         { name: "Saturday pass", category: "Saturday only", quantity: 1, price: "€18.00" },

@@ -16,8 +16,7 @@ export interface Ticket {
     valid_from: string;
     valid_until: string;
   };
-  /** Null when the buyer gave no name; the card then leads with the ticket's title. */
-  attendee_name?: string | null;
+  attendee_name: string;
   attendee_email: string;
   /** What the QR code encodes; never shown as text. */
   code: string;
@@ -184,19 +183,6 @@ TicketDeliveryEmail.PreviewProps = {
           days: ["2026-06-13"],
           valid_from: "2026-06-13T10:00:00Z",
           valid_until: "2026-06-13T20:00:00Z",
-        },
-      },
-      {
-        // bought without a name: the card leads with the ticket's title
-        attendee_email: "alex.johnson@example.com",
-        attendee_name: null,
-        code: "5d7f0c3a-91e2-4b68-a4d6-0e1b8c3f2a95",
-        displayId: "0E1B8C3F",
-        ticket: {
-          name: "Weekend pass",
-          days: ["2026-06-13", "2026-06-14"],
-          valid_from: "2026-06-13T10:00:00Z",
-          valid_until: "2026-06-14T20:00:00Z",
         },
       },
     ],
