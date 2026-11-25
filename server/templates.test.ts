@@ -83,6 +83,52 @@ describe("templates", () => {
     expect(email.text).toContain("2 days · 13 – 14 Jun");
   });
 
+  it("shows an order's discount between the items and the total, only when there is one", async () => {
+    const order = async (extra: object) =>
+      (await renderTemplate(
+        "order-confirmation",
+        {
+          order: {
+            displayId: "A1B2C3",
+            items: [{ name: "Weekend pass", quantity: 1, price: "€40.00" }],
+            totalAmount: "€30.00",
+            ...extra,
+          },
+        },
+        "alex@example.com",
+      )).text;
+
+    const discounted = await order({ discount: "€10.00" });
+    expect(discounted).toMatch(/Weekend pass × 1[\s\S]*Discount[\s\S]*\u2212€10\.00[\s\S]*Total/);
+    expect(await order({})).not.toContain("Discount");
+  });
+
+  it("leads a ticket with its title when the attendee has no name", async () => {
+    const ticket = (attendee_name: string | null) => ({
+      attendee_name,
+      attendee_email: "alex@example.com",
+      code: "TCK-1",
+      displayId: "8A1E7C30",
+      ticket: {
+        name: "Weekend pass",
+        valid_from: "2026-06-13T10:00:00Z",
+        valid_until: "2026-06-14T20:00:00Z",
+      },
+    });
+    const text = async (attendee_name: string | null) =>
+      (await renderTemplate("ticket-delivery", { tickets: [ticket(attendee_name)] }, "alex@example.com"))
+        .text;
+
+    // named: the name leads, and the title follows with the days
+    expect(await text("Sam Rivera")).toMatch(/Sam Rivera[\s\S]*Weekend pass · 13 – 14 Jun/);
+    // unnamed: the title leads and is not repeated, only the days follow
+    for (const missing of [null, "", "   "]) {
+      const unnamed = await text(missing);
+      expect(unnamed.match(/Weekend pass/g)).toHaveLength(1);
+      expect(unnamed).toContain("13 – 14 Jun");
+    }
+  });
+
   it("shows the edition's dates as an interval, or its start alone", async () => {
     const dates = async (edition: object) =>
       (await renderTemplate("ticket-delivery", { edition }, "alex@example.com")).text;
